@@ -21,7 +21,6 @@ function Card(props) {
     )
 }
 
-
 function find(search_title) {
     let list = [];
     let title;
@@ -91,20 +90,23 @@ function Main() {
         <div className={styles.test}>
             <div className={styles.search}>
                 <div className={styles.searchBox}>
-                    <input type='text' value={title} className={styles.textBox} placeholder='영화 제목 입력' onChange={(e) => {
+                    <input type='text' value={title} className={styles.textBox} placeholder='영화 제목 입력' onKeyDown={(e) => {
+                        if(e.key == 'Enter') {
+                            setMovie(find(title));
+                        }
+                    }} onChange={(e) => {
                         setTitle(e.target.value);
+                        if(e.target.value == ""){
+                            setFlag(true);
+                        }
                     }}></input>
-                    <button className={styles.btn3d} onClick={() => {
-                        setMovie(find(title));
-                        setFlag(false);
-                    }}>검색</button>
                     {flag ? null : list}
                 </div>
             </div>              
 
             <div className={styles.container}>
                 <div className={styles.grid}>
-                    {flag ? <h1>영화 정보가 표시됩니다.</h1> : movie}
+                    {movie}
                     {/* {title ? list : <h1>영화 정보가 표시됩니다.</h1>} */}
                 </div>
             </div>
