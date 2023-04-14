@@ -1,6 +1,7 @@
 import styles from '@/styles/Home.module.css'
+import styled from 'styled-components';
 import movie from '../movie_data.json'
-import { useState, useEffect, React } from 'react';
+import { useState, useEffect, useRef, React } from 'react';
 import useDebounce from './useDebounce';
 
 function Card(props) {
@@ -46,71 +47,167 @@ function find(search_title) {
  */
 function searchList(title) {
     let list = [];
-    let cnt = 0;
+    let cnt = -1;
 
     for (let i = 0; i < movie.movie_data.length; i++) {
-        if(cnt > 10) break;
+        if(cnt > 9) break;
 
         if (movie.movie_data[i].title.includes(title)) {
             cnt = cnt + 1;
 
             let page = '/infos/' + i;           
             let title = movie.movie_data[i].title;
-            list.push(<a href={page}><li key={i}>{title}</li></a>);
+            //list.push(<a href={page} key={cnt}><li key={i}>{title}</li></a>);
+            list.push([page, title]);
         }
     }
 
-    return (
-        <div className={styles.list}>
-            <ul key={1}>
-                {list}
-            </ul>
-        </div>
-    )
+    return list;
 }
+
+const ListFocus = styled.li`
+      padding: 5px 4px;
+      text-align: left;
+      background: ${props => props.isFocus ? "rgb(158, 157, 157)" : "rgb(221, 219, 219)"};
+    `;
 
 function Main() {
     const [flag, setFlag] = useState(true);
     const [title, setTitle] = useState("");
     const [list, setList] = useState(null);
     const [movie, setMovie] = useState(null);
+    const [idx, setIdx] = useState(-1);
+    const [notDebounce, setnotDebounce] = useState(false);
+
+    const inputRef = useRef();
+    const ulRef = useRef(null);
 
     const debounceValue = useDebounce(title);
 
+    // target이 inputRef이 등록된 하위 컨테이너가 아닐때 실행
+    const handleClickOutside = ({ target }) => {     
+        if (flag && !inputRef.current.contains(target)) {
+            console.log(target);
+            setFlag(true);          
+        }
+        setIdx(-1);
+        setnotDebounce(false);
+    };
+
+    // 미리보기 리스트와 검색창을 제외한 다른 화면을 클릭하면 미리보기가 닫힘
+    useEffect(() => {
+        //inputRef.current.focus();
+        window.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            window.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    // 디바운스를 이용하여 검색 리스트를 띄우는데 딜레이를 주어
+    // 엔터 입력이 없어도 자동으로 미리보기 리스트를 띄워준다.
     useEffect(() => {
         const getMovies = async () => {
             console.log(debounceValue);
             setList(searchList(debounceValue));
             setFlag(false);
         }
-        if (debounceValue) getMovies();
-    }, [debounceValue]);
+        if (debounceValue && !notDebounce) getMovies();
+    }, [debounceValue]);   
+
+    useEffect(() => {
+        if(list != null) {
+            console.log(list);
+            setFlag(false);
+        }     
+    }, [list])
+
+    useEffect(() => {
+        if(idx < 0) return;
+        setTitle(list[idx][1]);
+        setnotDebounce(true);
+    },[idx])
+    
+    function handleKeyDown(e) {
+        const { key } = e;
+        const listItems = ulRef.current.childElementCount ? ulRef.current.childElementCount:null;
+        if(listItems == null) return;
+
+        let nextIdx = 0;
+        
+        if (key == 'ArrowDown') {
+            e.preventDefault();
+            console.log('down')
+
+            //setIdx(idx + 1);
+            nextIdx = idx + 1;
+            if (nextIdx >= listItems) {
+                nextIdx = 0;
+            }
+            setIdx(nextIdx);
+        }
+
+        else if (key == 'ArrowUp') {
+            e.preventDefault();
+            console.log('up')
+            
+            //setIdx(idx - 1);
+            nextIdx = idx - 1
+            if (nextIdx < 0) {
+                nextIdx = listItems - 1;
+            }
+            setIdx(nextIdx);
+        }       
+    }  
 
     return (
         <div className={styles.test}>
             <div className={styles.search}>
                 <div className={styles.searchBox}>
-                    <input type='text' value={title} className={styles.textBox} placeholder='영화 제목 입력' onKeyDown={(e) => {
+                    <input type='text' key={100} value={title} ref={inputRef} className={styles.textBox} placeholder='영화 제목 입력' onKeyDown={(e) => {
                         if(e.key == 'Enter') {
                             setMovie(find(title));
+                        }
+                        else if(e.key == 'ArrowDown' || e.key == 'ArrowUp'){
+                            handleKeyDown(e);
+                        }
+                        else {
+                            setIdx(-1);
+                            setnotDebounce(false);
                         }
                     }} onChange={(e) => {
                         setTitle(e.target.value);
                         if(e.target.value == ""){
                             setFlag(true);
                         }
+                    }} onClick={(e) => {                       
+                        if(e.target.value == ""){
+                            setFlag(true);
+                        }
+                        else {
+                            setList(searchList(e.target.value));
+                        }
                     }}></input>
-                    {flag ? null : list}
+                    {flag ? null : 
+                    <div className={styles.list}>
+                        <ul ref={ulRef}>
+                            {list.map((item, index) => (                               
+                                <a href={item[0]} key={index}>
+                                    <ListFocus key={index} isFocus={idx == index ? true : false}>
+                                        {item[1]}
+                                    </ListFocus>
+                                </a>                      
+                            ))}
+                        </ul>
+                    </div>
+                    }
                 </div>
             </div>              
-
             <div className={styles.container}>
                 <div className={styles.grid}>
                     {movie}
-                    {/* {title ? list : <h1>영화 정보가 표시됩니다.</h1>} */}
+
                 </div>
             </div>
-
         </div>
     )
 }

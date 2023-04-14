@@ -136,12 +136,10 @@
   list-style-image: url("../pages/infos/marker.png");
 }
 
-.list li {
+/* .list li {
   padding: 5px 4px;
   text-align: left;
-  /* background: url("../pages/infos/marker.png") no-repeat;
-  background-size: 20px 20px; */
-}
+} */
 
 .list li:hover {
   background: rgb(158, 157, 157);
