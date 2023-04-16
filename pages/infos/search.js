@@ -57,7 +57,6 @@ function searchList(title) {
 
             let page = '/infos/' + i;           
             let title = movie.movie_data[i].title;
-            //list.push(<a href={page} key={cnt}><li key={i}>{title}</li></a>);
             list.push([page, title]);
         }
     }
@@ -138,7 +137,6 @@ function Main() {
             e.preventDefault();
             console.log('down')
 
-            //setIdx(idx + 1);
             nextIdx = idx + 1;
             if (nextIdx >= listItems) {
                 nextIdx = 0;
@@ -150,7 +148,6 @@ function Main() {
             e.preventDefault();
             console.log('up')
             
-            //setIdx(idx - 1);
             nextIdx = idx - 1
             if (nextIdx < 0) {
                 nextIdx = listItems - 1;
@@ -205,7 +202,6 @@ function Main() {
             <div className={styles.container}>
                 <div className={styles.grid}>
                     {movie}
-
                 </div>
             </div>
         </div>
