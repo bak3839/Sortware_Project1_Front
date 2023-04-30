@@ -84,41 +84,19 @@
 
 .btn3d:hover {background-color: #82D1E3;}
 
-.textBox {
-  width: 500px;
-  height: 30px;
-  border: solid 3px black;
-  
-}
-
-.search {
+/* .search {
   width: 100%;
   height: 69px;
-  margin: 0 auto;
+}
+.textBox {
+  width: 100%;
+  height: 30px;
+  font-size: 1.4rem;
 }
 
-.searchBox {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-}
 
 .list {
-  position: absolute;
-  left: 0;
-  top: 37px;
-  width: 500px;
   margin: 0 auto;
-  border-top-width: 2px;
-  border-bottom-width: 3px;
-  border-left-width: 3px;
-  border-right-width: 3px;
-  border-style: solid;
-  border-color: black;
-  border-bottom-left-radius: 13px;
-  border-bottom-right-radius: 13px;
   padding: 1px 2px;
   background-color: rgb(221, 219, 219);
 }
@@ -136,16 +114,16 @@
   list-style-image: url("../pages/infos/marker.png");
 }
 
-/* .list li {
+.list li {
   padding: 5px 4px;
   text-align: left;
-} */
+}
 
 .list li:hover {
   background: rgb(158, 157, 157);
   text-decoration: none;
   
-}
+} */
 
 .card_container {
   width: 100%;
@@ -219,12 +197,12 @@
   height: 340px;
 } */
 
-.image {
+/* .image {
   width: 200px;
   height: 285px;
   object-fit: cover;
   border-radius: 8px;
-}
+} */
 
 .test {
   width: 100%;
