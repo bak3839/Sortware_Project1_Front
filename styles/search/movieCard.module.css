@@ -1,0 +1,72 @@
+/* movieCard.css */
+
+.card_container {
+    width: 100%;
+    margin: 0 auto;
+}
+/*
+.card {
+    margin: 5px;
+    padding: 12px 3px;
+    border-radius: 12px;
+    background-color: rgba(210, 210, 204, 0.591);
+    border: 2px solid black;
+    -webkit-transition: background-color 200ms, border-radius 200ms, border 200ms;
+    width: 230px;
+    display: inline-block;
+} 
+*/
+
+.card {
+    position: relative;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    min-height: 100%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-decoration: none;
+    color: #444;
+    background: white;
+    transition: all .1s ease-in; 
+}
+
+.card:hover {
+    top: -3px;
+    box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+}
+
+/* .card:hover {
+    background-color: rgb(225, 231, 231);
+    border: 2px solid pink;
+    transition: 200ms;
+} */
+
+.card span {
+    display: inline-block;
+    transition: transform 200ms;
+}
+
+.card h2 {
+    margin-bottom: 0.7rem;
+    font-weight: 600;
+}
+
+.card p {
+    width: 200px;
+    margin: 0;
+    opacity: 0.6;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.card a {
+    text-decoration-line: none;
+}
+
+.image {
+    width: 200px;
+    height: 285px;
+    object-fit: cover;
+    border-radius: 8px;
+}

@@ -1,123 +1,542 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import Navigation from '@/components/common/Navigation'
+import HomeMovieCard from '@/components/HomeMovieCard';
+import styled from 'styled-components';
 
-const inter = Inter({ subsets: ['latin'] })
+const lists = [
+    {
+      "index": 0,
+      "id": 59,
+      "title": "폭력의 역사",
+      "overview": "가정적이고 친절한 남자 톰은 어느 날 그가 운영하던 작은 식당에 들이닥친 파산 직전의 살인자들을 죽이고 사람을 구한 일로 일약 마을의 영웅이 되어 매스컴에 대서특필된다. 그러나 며칠 후, 거대 갱단의 두목 포가티가 찾아와 그의 진짜 정체는 따뜻한 가장 톰이 아닌 자신의 적이자 킬러인 조이라며 가족을 위협한다. 아내 에디와 아이들 역시 톰에게서 문득문득 보이는 조이의 모습에 두려움을 느끼며 점점 그를 멀리하고, 마침내 포가티는 톰의 집에 총을 들고 들이닥치는데...",
+      "poster_path": "\/76e6VadQglaSRPKSfgFbQauODm4.jpg",
+      "keyword": "robbery,double life,dual identity,small town,indiana, usa,distrust,fight,self-defense,marriage,based on comic,revenge,family relationships,mistaken identity,diner,lawyer,mobster,attempted robbery,based on graphic novel,",
+      "genre": "범죄,드라마,액션,스릴러",
+      "title_en": "A History Of Violence",
+      "cast\/0\/actor_id": 110,
+      "cast\/0\/character": "Tom Stall",
+      "cast\/1\/actor_id": 49,
+      "cast\/1\/character": "Edie Stall",
+      "cast\/2\/actor_id": 226,
+      "cast\/2\/character": "Sarah Stall",
+      "cast\/3\/actor_id": 225,
+      "cast\/3\/character": "Jack Stall",
+      "cast\/4\/actor_id": 227,
+      "cast\/4\/character": "Richie Cusack",
+      "cast\/5\/actor_id": 228,
+      "cast\/5\/character": "Carl Fogarty",
+      "director": "David Cronenberg,",
+      "date": "09\/23\/2005",
+      "vote_count": 2770,
+      "vote_aver": 7.18
+  },
+  {
+      "index": 1,
+      "id": 67,
+      "title": "천국을 향하여",
+      "overview": "이스라엘에 삶의 터전을 빼앗기고 그들의 암제와 차별정책, 절대적 빈곤 속에서 미래에 대한 희망도 없이 살아가는 팔레스타인의 젊은 청년들. 그들이 할 수 있는 저항이라고는 자신의 온몸을 산화시켜, 이스라엘인들에게 두려움을 주는 것뿐이다. 어릴 때부터 형제처럼 자라온 자이드와 할레드도 어느날 저항군 조직의 부름을 받고, 기꺼이 순교자의 소명을 받아들인다. 그러나 막상 가슴에 폭탄 띠를 두르고 이스라엘로 향하던 두 청년은 마음이 흔들리기 시작한다. 지옥 같은 현실에서 죽음과 같은 삶을 사는 것 보다는 영웅적인 죽음을 택해 천국으로 가고자 했던 그들. 그러나 과연 끊임없이 죽이고 죽고, 보복에 보복을 거듭하는 이 저항방식이 그들이 원하던 승리를 가져다 줄 것인가. 그들에겐 다른 선택의 여지가 없는 것인가하는 의문들이 그들을 주저하게 만든다. 죽음을 눈앞에 앞 둔 48시간 동안 자이드와 할레드는 극심한 혼란과 마음의 갈등을 겪게 되는데...",
+      "poster_path": "\/qWZkYa8VdcDZk8uzRB2PfhpM9IL.jpg",
+      "keyword": "individual,civil war,israel,palestine,middle east,muslim,palestinian-israeli conflict,friendship,suicide mission,unemployment,gay,",
+      "genre": "드라마",
+      "title_en": "Paradise Now",
+      "cast\/0\/actor_id": 762,
+      "cast\/0\/character": "Khaled",
+      "cast\/1\/actor_id": 764,
+      "cast\/1\/character": "Jamal",
+      "cast\/2\/actor_id": 765,
+      "cast\/2\/character": "Said's mother",
+      "cast\/3\/actor_id": 766,
+      "cast\/3\/character": "Abu Karem",
+      "cast\/4\/actor_id": 791,
+      "cast\/4\/character": "Abu Salim",
+      "cast\/5\/actor_id": 77498,
+      "cast\/5\/character": "Suha",
+      "director": "Hany Abu-Assad,",
+      "date": "09\/07\/2005",
+      "vote_count": 213,
+      "vote_aver": 6.9
+  },
+  {
+      "index": 2,
+      "id": 69,
+      "title": "앙코르",
+      "overview": "30세가 되기도 전에 비틀즈의 인기를 앞서고, 엘비스 프레슬리, 제리 리 루이스 등과의 어깨를 함께 했던 ‘쟈니 캐쉬’의 천재적이고 열정적인 음악 인생과 지독하게도 외롭고, 열정적이었던 그의 사랑이 아름다운 음악에 맞춰 펼쳐진다.  쟈니 캐쉬(호아킨 피닉스)는 어린 시절 부모님의 끔찍한 사랑을 받던 형이 사고로 죽은 뒤 평생을 형의 자리를 대신해 부모님의 사랑을 얻기 위해 노력하며 힘들어한다. 어린 시절부터 노래를 좋아했던 그는 작은 레코드회사에서 처음으로 자신의 앨범을 낸 뒤 순식간에 전 미국 소녀들의 우상으로 떠오르며 스타가 된다.  이미 어린 시절 첫사랑과 결혼한 유부남이었던 쟈니는 역시 가수인 준 카터(리즈 위더스푼)와 투어를 다니다 열정적인 사랑에 빠지게 되고, 이미 온갖 약물중독으로 망가질 대로 망가진 그에게 ‘준’은 ‘쟈니’를 그 자신으로부터 구해줄 수 있는 유일한 사람이 된다.",
+      "poster_path": "\/eV61rwiaprn2spmEvXwcSrZJh55.jpg",
+      "keyword": "germany,prison,music record,adultery,loss of loved one,country music,guitar,concert,marriage,single,johnny cash,accident,1960s,",
+      "genre": "드라마",
+      "title_en": "Walk The Line",
+      "cast\/0\/actor_id": 73421,
+      "cast\/0\/character": "John R. Cash",
+      "cast\/1\/actor_id": 368,
+      "cast\/1\/character": "June Carter",
+      "cast\/2\/actor_id": 417,
+      "cast\/2\/character": "Vivian Cash",
+      "cast\/3\/actor_id": 418,
+      "cast\/3\/character": "Ray Cash",
+      "cast\/4\/actor_id": 424,
+      "cast\/4\/character": "Sam Phillips",
+      "cast\/5\/actor_id": 425,
+      "cast\/5\/character": "Luther Perkins",
+      "director": "James Mangold,",
+      "date": "09\/13\/2005",
+      "vote_count": 2511,
+      "vote_aver": 7.494
+  },
+  {
+      "index": 3,
+      "id": 74,
+      "title": "우주전쟁",
+      "overview": "레이 페리어는 이혼한 항만 근로자로 아무런 희망 없이 매일을 살아간다. 그러던 어느 주말, 그의 전 부인은 아들 로비와 어린 딸 레이첼과 주말을 보내라고 레이에게 맡긴다. 그리곤 얼마 안 있어 강력한 번개가 내리친다. 잠시 후, 레이는 그의 집 근처에 있는 교차로에서 그들의 삶을 영원히 바꾸어버릴 엄청난 사건을 목격하게 된다. 커다랗고 다리가 셋 달린 정체 불명의 괴물이 땅속 깊은 곳에서 나타나 사람들이 미처 반응도 하기 전에 모든 것을 재로 만들었다. 평범했던 하루가 갑자기 외부의 알 수 없는 침략자들의 첫 번째 지구 공격으로 그들 인생에서 가장 엄청난 사건이 일어난 날이 되어버린 것이다. 레이는 그의 아이들을 이 무자비한 새로운 적들로부터 보호하기 위해 급히 피난을 떠나, 파괴되고 황폐해진 도시를 가로지르는 여정에 오른다. 거기서 그들은 침략자들을 피하기 위해 필사적으로 도망치는 피난민들을 만나 합류하게 된다. 그러나 그들이 어디로 가든지 안전한 곳은 없고, 피난처도 없다. 단지 소중한 사람을 지켜내겠다는 레이의 확고한 의지만 존재 할 뿐인데…..",
+      "poster_path": "\/f4JdjFJmyc76L5tjjdCOIQuzCZo.jpg",
+      "keyword": "post traumatic stress disorder,new jersey,based on novel or book,underground,airplane,dystopia,daughter,remake,alien,survival,apocalypse,creature,alien invasion,human subjugation,",
+      "genre": "드라마,액션,SF,스릴러",
+      "title_en": "War Of The Worlds",
+      "cast\/0\/actor_id": 500,
+      "cast\/0\/character": "Ray Ferrier",
+      "cast\/1\/actor_id": 501,
+      "cast\/1\/character": "Rachel Ferrier",
+      "cast\/2\/actor_id": 503,
+      "cast\/2\/character": "Robbie Ferrier",
+      "cast\/3\/actor_id": 502,
+      "cast\/3\/character": "Mary-Ann",
+      "cast\/4\/actor_id": 504,
+      "cast\/4\/character": "Harlan Ogilvy",
+      "cast\/5\/actor_id": 53184,
+      "cast\/5\/character": "Vincent",
+      "director": "Steven Spielberg,",
+      "date": "06\/28\/2005",
+      "vote_count": 7398,
+      "vote_aver": 6.492
+  },
+  {
+      "index": 4,
+      "id": 82,
+      "title": "마이애미 바이스",
+      "overview": "플로리다 남부로 유입되는 마약 공급책을 수사 중이던 FBI, CIA, DEA 연합 합동 작전이 정보 유출로 인해 실패로 돌아가고 연이은 세 건의 살인 사건이 발생한다. 내부 정보 유출로 더 이상의 사건 개입이 불가능해진 FBI는 합동 작전에 연루되지 않았던 비밀경찰 리코(제이미 폭스)와 소니(콜린 파렐)를 마약 운반책으로 위장 시켜 조직에 잠입시킨다. 수사기관의 시스템을 누구보다 잘 아는 두 사람은 정보를 역이용, 기관의 감시를 피해 첫 임무를 완벽하게 성사시키며 조직원으로 합류하지만, 보스의 아내 이사벨라(공리)에게 사랑을 느끼면서 복잡한 관계에 빠지는데...",
+      "poster_path": "\/e6Gq98gdnrwbLNtRcltnLxy6dnC.jpg",
+      "keyword": "miami, florida,florida,undercover,remake,drug dealing,police detective,urban setting,police investigation,havana, cuba,speedboat?,action hero,",
+      "genre": "액션",
+      "title_en": "Miami Vice",
+      "cast\/0\/actor_id": 72466,
+      "cast\/0\/character": "Det. James 'Sonny' Crockett",
+      "cast\/1\/actor_id": 134,
+      "cast\/1\/character": "Det. Ricardo 'Rico' Tubbs",
+      "cast\/2\/actor_id": 643,
+      "cast\/2\/character": "Isabella",
+      "cast\/3\/actor_id": 2038,
+      "cast\/3\/character": "Det. Trudy Joplin",
+      "cast\/4\/actor_id": 40543,
+      "cast\/4\/character": "Jose Yero",
+      "cast\/5\/actor_id": 8785,
+      "cast\/5\/character": "FBI Agent John Fujima",
+      "director": "Michael Mann,",
+      "date": "07\/27\/2006",
+      "vote_count": 1507,
+      "vote_aver": 5.983
+  },
+  {
+      "index": 5,
+      "id": 116,
+      "title": "매치 포인트",
+      "overview": "가난한 테니스 강사 크리스(조너선 리스 메이어스)는 상류층 친구 톰(매튜 구드)을 통해 그의 여동생 클로에(에밀리 모티머)와 그 가족들을 알게 된다. 신분 상승을 꿈꾸던 크리스는 클로에의 소개로 그녀의 아버지 회사에 취직하고, 클로에와 결혼하면서 꿈을 이뤄나간다. 그러나 그는 톰의 약혼녀였던 노라(스칼렛 요한슨)와 금지된 사랑에 빠져든다. 크리스를 향한 노라의 당연한 집착이 드러나면서 크리스의 이기적인 욕망은 점차 현실을 인식하게 된다. 이제 크리스는, 생각지도 못했던 결심을 실천에 옮기기에 이른다.",
+      "poster_path": "\/sTTp5CfMZAq0FWXoU7Nml6CtEfY.jpg",
+      "keyword": "love triangle,london, england,upper class,adultery,tennis,river thames,sports,love,wealth,lust,gold digger,instructor,social climbing,",
+      "genre": "멜로\/로맨스,드라마",
+      "title_en": "Match Point",
+      "cast\/0\/actor_id": 1244,
+      "cast\/0\/character": "Chris Wilton",
+      "cast\/1\/actor_id": 1245,
+      "cast\/1\/character": "Nola Rice",
+      "cast\/2\/actor_id": 1246,
+      "cast\/2\/character": "Chloe Hewett Wilton",
+      "cast\/3\/actor_id": 1248,
+      "cast\/3\/character": "Alec Hewett",
+      "cast\/4\/actor_id": 1249,
+      "cast\/4\/character": "Eleanor Hewett",
+      "cast\/5\/actor_id": 34715,
+      "cast\/5\/character": "Detective Banner",
+      "director": "Woody Allen,",
+      "date": "10\/26\/2005",
+      "vote_count": 3639,
+      "vote_aver": 7.352
+  },
+  {
+      "index": 6,
+      "id": 118,
+      "title": "찰리와 초콜릿 공장",
+      "overview": "전 세계 누구에게나 사랑 받는 윌리 웡카 초콜릿 공장. 매일 엄청난 양의 초콜릿을 생산해 세계 각국으로 운반하고 있지만 그 누구도 공장을 드나 드는 사람을 본 적이 없는 비밀의 공간이다. 공장보다 더 신비로운 수수께끼는 공장장인 윌리 웡카(조니 뎁)라는 인물. 소문에 의하면 웡카는 몇 년 동안 공장 밖으로 나가본 적도 없다고 한다. 어느 날 윌리 웡카가 5개의 웡카 초콜릿에 감춰진 행운의 황금티켓을 찾은 어린이 다섯 명에게 자신의 공장을 공개하고 그 모든 제작과정의 비밀을 보여주겠다는 선언을 한다. 이제 전 세계 어린이들은 황금티켓을 찾기 위한 노력을 시작한다.",
+      "poster_path": "\/b3422i6tIf91RttBRfIz70dBSwn.jpg",
+      "keyword": "london, england,chocolate,factory worker,based on novel or book,parent child relationship,candy,overweight child,grandparent grandchild relationship,teacher,candy bar,",
+      "genre": "코미디,가족,판타지",
+      "title_en": "Charlie And The Chocolate Factory",
+      "cast\/0\/actor_id": 85,
+      "cast\/0\/character": "Willy Wonka",
+      "cast\/1\/actor_id": 1281,
+      "cast\/1\/character": "Charlie Bucket",
+      "cast\/2\/actor_id": 1282,
+      "cast\/2\/character": "Grandpa Joe",
+      "cast\/3\/actor_id": 1283,
+      "cast\/3\/character": "Mrs. Bucket",
+      "cast\/4\/actor_id": 1284,
+      "cast\/4\/character": "Mr. Bucket",
+      "cast\/5\/actor_id": 1294,
+      "cast\/5\/character": "Mrs. Beauregarde",
+      "director": "Tim Burton,",
+      "date": "07\/13\/2005",
+      "vote_count": 13427,
+      "vote_aver": 7.038
+  },
+  {
+      "index": 7,
+      "id": 142,
+      "title": "브로크백 마운틴",
+      "overview": "눈부신 만년설로 뒤덮인 봉우리와 맑고 깊은 계곡, 한없이 펼쳐진 푸른 초원 위에 노니는 수천 마리의 양떼가 장관을 이루고 있는 8월의 브로크백 마운틴. 이곳의 양떼 방목장에서 여름 한 철 함께 일하게 된 갓 스물의 두 청년 에니스와 잭은 마치 오랜 친구처럼 서로에게 마음을 터놓는 사이가 된다. 대자연의 품에서 깊어져 간 그들의 우정은 친구 사이의 친밀함 이상으로 발전해간다. 그들 앞에 놓인 낯선 감정의 실체가 무엇인지도 알지 못한 채 짧은 방목철이 끝나고 다시 만날 기약도 없이 두 사람은 각자의 삶으로 돌아간다. 결혼해 아이를 낳고 평범한 생활을 하다가 4년 만에 다시 만난 두 사람은 단번에 브로크백에서 서로에게 가졌던 그 낯선 감정이 일시적인 것이 아니었음을 알게 되는데...",
+      "poster_path": "\/o5oQC9GxEfClgnHvabpvGhkUoqe.jpg",
+      "keyword": "countryside,homophobia,wyoming, usa,intolerance,marriage crisis,secret love,in the closet,summer,cowboy,lgbt,star crossed lovers,1960s,closeted homosexual,gay love,gay theme,gay,gay relationship,",
+      "genre": "드라마",
+      "title_en": "Brokeback Mountain",
+      "cast\/0\/actor_id": 1810,
+      "cast\/0\/character": "Ennis Del Mar",
+      "cast\/1\/actor_id": 131,
+      "cast\/1\/character": "Jack Twist",
+      "cast\/2\/actor_id": 1812,
+      "cast\/2\/character": "Alma Beers",
+      "cast\/3\/actor_id": 1813,
+      "cast\/3\/character": "Lureen Newsome",
+      "cast\/4\/actor_id": 1811,
+      "cast\/4\/character": "Joe Aguirre",
+      "cast\/5\/actor_id": 1817,
+      "cast\/5\/character": "Cassie Cartwright",
+      "director": "Ang Lee,",
+      "date": "09\/10\/2005",
+      "vote_count": 6168,
+      "vote_aver": 7.802
+  },
+  {
+      "index": 8,
+      "id": 155,
+      "title": "다크 나이트",
+      "overview": "범죄와 부정부패를 제거하여 고담시를 지키려는 배트맨. 그는 짐 고든 형사와 패기 넘치는 고담시 지방 검사 하비 덴트와 함께 도시를 범죄 조직으로부터 영원히 구원하고자 한다. 세 명의 의기투합으로 위기에 처한 악당들이 모인 자리에 보라색 양복을 입고 얼굴에 짙게 화장을 한 괴이한 존재가 나타나 배트맨을 죽이자는 사상 초유의 제안을 한다. 그는 바로 어떠한 룰도, 목적도 없는 사상 최악의 악당 미치광이 살인광대 조커. 배트맨을 죽이고 고담시를 끝장내버리기 위한 조커의 광기 어린 행각에 도시는 혼란에 빠지는데...",
+      "poster_path": "\/f6dNinWX8rBM79JXKcShkfSh2oA.jpg",
+      "keyword": "crime fighter,secret identity,anti hero,scarecrow,sadism,chaos,vigilante,joker,superhero,based on comic,tragic hero,organized crime,anti villain,criminal mastermind,district attorney,super power,super villain,neo-noir,",
+      "genre": "범죄,드라마,액션,미스터리",
+      "title_en": "The Dark Knight",
+      "cast\/0\/actor_id": 3894,
+      "cast\/0\/character": "Bruce Wayne \/ Batman",
+      "cast\/1\/actor_id": 1810,
+      "cast\/1\/character": "Joker",
+      "cast\/2\/actor_id": 3895,
+      "cast\/2\/character": "Alfred Pennyworth",
+      "cast\/3\/actor_id": 64,
+      "cast\/3\/character": "James Gordon",
+      "cast\/4\/actor_id": 6383,
+      "cast\/4\/character": "Harvey Dent \/ Two-Face",
+      "cast\/5\/actor_id": 1579,
+      "cast\/5\/character": "Rachel Dawes",
+      "director": "Christopher Nolan,",
+      "date": "07\/14\/2008",
+      "vote_count": 29349,
+      "vote_aver": 8.5
+  },
+  {
+      "index": 9,
+      "id": 179,
+      "title": "인터프리터",
+      "overview": "아프리카 태생인 UN 통역사 실비아 브룸이 그녀 외 극소수만이 알고 있는 언어로 아프리카 정치 지도자의 목숨을 위협하는 것을 엿들었다고 강력히 주장하면서 사건은 시작된다. 연방요원 토빈 켈러의 보호를 받게 되면서 그녀의 상황은 더욱 더 끔찍해진다. 그녀의 미심쩍은 과거와 그녀가 비밀스럽게 국제적으로 연결 되어 있다는 사실을 파헤치게 되면서 그녀가 음모 속으로 직접 뛰어들지 않았나 하고 더욱 의심하게 되고, 매 순간마다 그는 그녀를 더욱더 의심스럽게 만드는 증거들을 찾아내게 된다.",
+      "poster_path": "\/xxwBaylfqKrCZ9XstENHMpd36Xj.jpg",
+      "keyword": "new york city,dictator,africa,destruction of a civilization,assassination,resistance,fbi,revenge,murder,united nations,witness to murder,resistance fighter,",
+      "genre": "드라마,스릴러",
+      "title_en": "The Interpreter",
+      "cast\/0\/actor_id": 2227,
+      "cast\/0\/character": "Silvia Broome",
+      "cast\/1\/actor_id": 2228,
+      "cast\/1\/character": "Tobin Keller",
+      "cast\/2\/actor_id": 2245,
+      "cast\/2\/character": "Philippe",
+      "cast\/3\/actor_id": 2249,
+      "cast\/3\/character": "Police Chief Lee Wu",
+      "cast\/4\/actor_id": 2229,
+      "cast\/4\/character": "Dot Woods",
+      "cast\/5\/actor_id": 2244,
+      "cast\/5\/character": "Nils Lud",
+      "director": "Sydney Pollack,",
+      "date": "04\/08\/2005",
+      "vote_count": 1264,
+      "vote_aver": 6.299
+  },
+]
+const lists2 = [
+  {
+    "index": 10,
+    "id": 186,
+    "title": "럭키 넘버 슬레븐",
+    "overview": "슬레븐(조쉬 하트넷)의 인생은 단단히 꼬이기 시작한다. 회사에서 실직한 그 날, 그의 아파트는 폐기 처분되고 여자친구가 바람피는 장면까지 목격하게 된 슬레븐은 이 상황을 벗어나기 위해 LA에서 친구인 닉 피셔가 있는 뉴욕으로 온다. 하지만 공항에서 나오자마자 만난 강도에게 지갑을 털리고 코까지 부러지고 만다. 겨우 친구의 아파트에 도착한 슬레븐, 그러나 자신을 친구로 오인하는 두 마피아 조직 사이에 끼게 된 그는 지갑을 털리면서 자신을 증명할 신분증조차 없다.  닉의 아파트에 머무르던 슬레븐에게 설탕을 빌리러 온 앞집에 사는 린지(루시 리우). 그녀의 엉뚱함과 유머 감각은 슬레븐을 설레게하고 급속히 서로에게 빠져들기 시작하는데... 뉴욕에서 일어난 네 번의 살인사건에 연루된 시체를 검사하는 활발한 성격을 가진 미모의 검시관 린지와 어리숙한 슬레븐, 그들은 통한다는 걸 느끼면서 순식간에 친해지고 순수한 사랑을 느끼게 된다. 도둑 맞은 신분증과 때마침 사라진 친구 때문에 자신의 신분을 확인시켜줄 방법이 아무것도 없는 지금, 자신을 위로하고 믿어주는 단 한 사람은 린지뿐이다. 슬레븐과 함께 닉의 행방을 끈질기게 쫓기 시작한다.  어느날, 슬레븐은 닉의 집으로 들이닥친 두 남자에 의해 막무가내로 뉴욕의 양대 마피아 조직의 하나인 보스(모건 프리먼) 앞으로 끌려가게 된다. 그를 닉 피셔로 착각하는 보스는 도박 빚 탕감을 조건으로 그의 적인 랍비(벤 킹슬리)의 아들 이삭의 암살을 제안한다. 한편, 랍비에게도 빚을 졌던 닉으로 오인받은 슬레븐은 보스를 살인하라는 청부를 맡게 된다. 냉혈형사 브리코우스키와 악명높은 암살자 굿캣(브루스 윌리스)이 자신에게 감시의 눈을 떼지 않는 가운데, 슬레븐은 살아남기 위해서 살인을 해야함을 깨닫는데....",
+    "poster_path": "\/fm14ShWzqI8VjJ1QavtihL7DmjM.jpg",
+    "keyword": "assassination,assassin,identity,sniper,fbi,mistake in person,gangster,gambling debt,boss,murder,sniper rifle,horse racing,gambler,hoodlum,",
+    "genre": "스릴러,범죄",
+    "title_en": "Lucky Number Slevin",
+    "cast\/0\/actor_id": 2299,
+    "cast\/0\/character": "Slevin",
+    "cast\/1\/actor_id": 192,
+    "cast\/1\/character": "The Boss",
+    "cast\/2\/actor_id": 2282,
+    "cast\/2\/character": "The Rabbi",
+    "cast\/3\/actor_id": 140,
+    "cast\/3\/character": "Lindsey",
+    "cast\/4\/actor_id": 62,
+    "cast\/4\/character": "Mr. Goodkat",
+    "cast\/5\/actor_id": 2283,
+    "cast\/5\/character": "Det. Brikowski",
+    "director": "Paul McGuigan,",
+    "date": "02\/24\/2006",
+    "vote_count": 3590,
+    "vote_aver": 7.476
+},
+{
+    "index": 11,
+    "id": 187,
+    "title": "씬 시티",
+    "overview": "형사 하티건은 천사와 같이 순수한 댄서 낸시를 지키기 위해 자신의 모든 것을 버리고 총을 잡는다. 그러나 상원의원인 아버지의 권력을 이용하는 유괴범 로크는 낸시를 손에 넣기 위해 하티건을 죽음으로 몰아간다. 거리의 파이터인 마브는 하룻밤 사랑을 나눈 금발 여인 골디가 다음날 아침 싸늘한 주검이 되어있는 것을 발견하게 된다. 살인 누명을 쓰고 쫓기게 된 마브는 그녀를 위해 복수를 시작한다. 한편 올드 타운에서 부패한 형사반장이 살해당하는 사건에 휘말린 사진작가 드와이트는 타운의 보스인 게일과 함께 경찰의 비호를 받는 갱들과 한바탕 전쟁을 준비한다.",
+    "poster_path": "\/7EUpW9XRy1QlNgiHh9i9IPTG9Iu.jpg",
+    "keyword": "dystopia,based on comic,held captive,based on graphic novel,mysterious killer,doing the right thing,silhouette,neo-noir,short stories,",
+    "genre": "범죄,스릴러,액션",
+    "title_en": "Sin City",
+    "cast\/0\/actor_id": 62,
+    "cast\/0\/character": "Det. John Hartigan",
+    "cast\/1\/actor_id": 56731,
+    "cast\/1\/character": "Nancy Callahan",
+    "cast\/2\/actor_id": 2296,
+    "cast\/2\/character": "Dwight McCarthy",
+    "cast\/3\/actor_id": 2295,
+    "cast\/3\/character": "Marv",
+    "cast\/4\/actor_id": 585,
+    "cast\/4\/character": "Cardinal Patrick Henry Roark",
+    "cast\/5\/actor_id": 1121,
+    "cast\/5\/character": "Det. Lt. Jack \"Jackie Boy\" Rafferty",
+    "director": "Robert Rodriguez,Quentin Tarantino,Frank Miller,",
+    "date": "04\/01\/2005",
+    "vote_count": 7249,
+    "vote_aver": 7.435
+},
+{
+    "index": 12,
+    "id": 189,
+    "title": "씬 시티: 다크히어로의 부활",
+    "overview": "씬 시티의 절대권력 ‘로어크’와의 도박판에 끼어든 겁 없는 겜블러 ‘조니’(조셉 고든-레빗)는 도박에서는 승리하지만 ‘로어크’에게 처절한 응징을 당하게 되고 그를 향한 복수의 칼날을 간다. 부패한 권력의 도시 씬 시티의 마지막 로맨티스트 ‘드와이트’(조슈 브롤린)는 용서를 구하는 옛 연인 ‘아바’(에바 그린)의 유혹에 넘어가 그녀의 남편을 살해하지만 결국 그 자신도 ‘아바’에 의해 위험에 처한다. 밤의 여신 ‘낸시’(제시카 알바)는 자신의 은인이자 연인 ‘하티건’(브루스 윌리스)을 잃고 ‘하티건’을 죽음으로 몰고 간 ‘로어크’를 향한 복수를 다짐한다. 이 모든 상황을 지켜보던 도시의 지배자 ‘마브’(미키 루크)는 이들의 복수에 가세한다.  씬 시티의 절대 악 ‘로어크’는 과연 제거 될 수 있을 것인가!  다크히어로의 부활을 맞이하라!",
+    "poster_path": "\/7seL5jPNNmhY5r1KdW6rR45VJZa.jpg",
+    "keyword": "detective,dystopia,dominatrix,murder,twins,based on graphic novel,dark horse comics,neo-noir,",
+    "genre": "액션,범죄,스릴러",
+    "title_en": "Sin City: A dame to kill for",
+    "cast\/0\/actor_id": 2295,
+    "cast\/0\/character": "Marv",
+    "cast\/1\/actor_id": 56731,
+    "cast\/1\/character": "Nancy",
+    "cast\/2\/actor_id": 62,
+    "cast\/2\/character": "Hartigan",
+    "cast\/3\/actor_id": 16851,
+    "cast\/3\/character": "Dwight",
+    "cast\/4\/actor_id": 24045,
+    "cast\/4\/character": "Johnny",
+    "cast\/5\/actor_id": 10912,
+    "cast\/5\/character": "Ava",
+    "director": "Robert Rodriguez,Frank Miller,",
+    "date": "08\/20\/2014",
+    "vote_count": 3407,
+    "vote_aver": 6.359
+},
+{
+    "index": 13,
+    "id": 214,
+    "title": "쏘우 3",
+    "overview": "유능한 뇌 전문 박사 린은 병원에서 하루 일과를 마치고 나오던 어느 날 밤, 알 수 없는 누군가에 의해 납치된다. 정체 불명의 밀실에서 눈을 뜬 린 박사가 마주 친 것은 병상에 누워 있는 죽기 직전의 직쏘! 직쏘는 심판이라는 명분으로 여러 명을 죽음의 게임에 끌어들였던 지능적 살인마이다. 직쏘의 새로운 게임 대상이 된 린은 다른 방에 잡혀있는 또 다른 인질이 미션을 모두 마칠 동안 직쏘를 살려야 한 다는 말을 듣게 된다  같은 시각, 나무 상자 안에서 깨어난 제프. 그는 교통사고로 아들을 잃은 충격으로 휩싸여 있는 인물이다. 그에게 주어진 게임은 아들의 사고와 관련되어 있는 사람들을 차례로 만나 직쏘가 정한 규칙대로 미션을 수행해야 한다는 것. 그리고 그에게는 게임을 풀 수 있는 단 두 시간의 시간이 주어진다.  끝이라 생각한 순간, 또 다른 게임은 이미 시작되었다! 같은 시간, 각기 다른 방에서 동시에 시작된 미션. 둘 중 한명만 성공 해서는 목숨을 보장 받지 못하며, 미션 중 하나는 스스로 풀 수 없다! 뿐만 아니라, 린의 목에 걸려 있는 폭탄장치는 직쏘의 심장 모니터와 연결이 되어 있어 직쏘의 심장이 멎거나 그와 일정 범위를 벗어나면 폭발해 버리게 된다. 린과 제프는 서로의 생존을 위해 각기 다른 방에서 미션을 수행하기 시작한다. 하지만 그것은 직쏘가 세워놓은 치밀한 계획 중 하나일 뿐, 이미 또 다른 게임은 시작되고 있었는데…",
+    "poster_path": "\/vnAek5l3lqrCvc0pvxI4IFqKXqL.jpg",
+    "keyword": "brain tumor,suffocation,sadism,horror,torture,survival horror,death match,mutilation,mind game,",
+    "genre": "공포(호러),스릴러",
+    "title_en": "Saw Ⅲ",
+    "cast\/0\/actor_id": 2144,
+    "cast\/0\/character": "John Kramer \/ Jigsaw",
+    "cast\/1\/actor_id": 2138,
+    "cast\/1\/character": "Amanda Young",
+    "cast\/2\/actor_id": 2464,
+    "cast\/2\/character": "Jeff Reinhart",
+    "cast\/3\/actor_id": 2677,
+    "cast\/3\/character": "Lynn Denlon",
+    "cast\/4\/actor_id": 2680,
+    "cast\/4\/character": "Eric Matthews",
+    "cast\/5\/actor_id": 2133,
+    "cast\/5\/character": "Kerry",
+    "director": "Darren Lynn Bousman,",
+    "date": "10\/27\/2006",
+    "vote_count": 3796,
+    "vote_aver": 6.381
+},
+{
+    "index": 14,
+    "id": 215,
+    "title": "쏘우 2",
+    "overview": "심판이라는 이름으로 희생자를 속출시킨 희대의 지능적 살인마 ‘직쏘’! 잡힐 것 같지 않던 직쏘를 예상외로 쉽게 체포하는데 성공한 형사 에릭은 사건을 종결시키려 하지만.. 그것은 끝이 아니었다. 직쏘는 평소 에릭과 사이가 좋지 않았던 에릭의 아들을 포함한 8명의 또 다른 희생자를 자신만이 아는 장소에 가두고 새로운 게임을 제안한 것!  최악의 현실,, 생존하고 싶다면 규칙을 기억하라!  3시간 후에야 열리는 폐쇄 공간,, 하지만 이미 퍼져 나오는 독가스는 2시간 안에 모두를 죽일 것이다. 숨겨진 해독제, 공통점으로 묶인 8명의 사람들, 규칙을 기억한다면 살아남을 수 있을 것이라는 직쏘의 녹음기 음성. 절체 절명의 게임을 제안 받은 8명은 죽음의 위협 앞에서 각기 다른 생존 방법을 찾기 시작하고 이들을 모니터로 지켜 보던 에릭은 미칠 것 같은 불안에 사로잡힌다. 그러나 직쏘는 그저 규칙을 기억하라는 얘기만 되풀이 하는데...",
+    "poster_path": "\/apXhunaMbuMyq3IvSJ3xNYrh6Yu.jpg",
+    "keyword": "riddle,sadism,horror,serial killer,torture,survival horror,death match,mind game,",
+    "genre": "공포(호러),스릴러",
+    "title_en": "Saw Ⅱ",
+    "cast\/0\/actor_id": 2144,
+    "cast\/0\/character": "John Kramer \/ Jigsaw",
+    "cast\/1\/actor_id": 2680,
+    "cast\/1\/character": "Eric Matthews",
+    "cast\/2\/actor_id": 2138,
+    "cast\/2\/character": "Amanda Young",
+    "cast\/3\/actor_id": 2681,
+    "cast\/3\/character": "Daniel Matthews",
+    "cast\/4\/actor_id": 2682,
+    "cast\/4\/character": "Xavier Chavez",
+    "cast\/5\/actor_id": 2683,
+    "cast\/5\/character": "Jonas Singer",
+    "director": "Darren Lynn Bousman,",
+    "date": "10\/28\/2005",
+    "vote_count": 4533,
+    "vote_aver": 6.554
+},
+{
+    "index": 15,
+    "id": 219,
+    "title": "귀향",
+    "overview": "마드리드에 살고 있는 젊고 아름다운 라이문다는 한없이 거칠고 희망이라고는 보이지 않는 일상을 살아간다. 그녀는 기둥서방과 다름없는 남편과 사춘기에 접어든 딸을 둔 실질적 가장으로 모든 현실이 짐스럽기만 하지만, 뭐든지 해내는 억척스런 생활력으로 가정을 이끌어 가고 있다. 그러나 어느 날 밤, 그녀의 딸 파울라가 성추행 하려는 아버지를 칼로 찔러 죽이는 사건이 벌어지는데...",
+    "poster_path": "\/sdqKZQxEYLSXOoto55oZ6uAMRD4.jpg",
+    "keyword": "child abuse,rape,fire,sexual abuse,madrid, spain,return,solidarity,village,superstition,death,ghost,abusive father,",
+    "genre": "드라마",
+    "title_en": "Spirits' Homecoming",
+    "cast\/0\/actor_id": 955,
+    "cast\/0\/character": "Raimunda",
+    "cast\/1\/actor_id": 2744,
+    "cast\/1\/character": "Irene",
+    "cast\/2\/actor_id": 2759,
+    "cast\/2\/character": "Sole",
+    "cast\/3\/actor_id": 3480,
+    "cast\/3\/character": "Agustina",
+    "cast\/4\/actor_id": 3481,
+    "cast\/4\/character": "Paula",
+    "cast\/5\/actor_id": 3482,
+    "cast\/5\/character": "Tia Paula",
+    "director": "Pedro Almodovar,",
+    "date": "03\/17\/2006",
+    "vote_count": 1471,
+    "vote_aver": 7.475
+},
+{
+    "index": 16,
+    "id": 231,
+    "title": "시리아나",
+    "overview": "CIA요원에서부터 파키스탄 이민노동까지 각기 다른 네 명의 이야기를 통해 석유이권을 둘러싼 정치적 음모와 배신, 권력의 부패를 파헤치는 음모 스릴러",
+    "poster_path": "\/ure2nBJ5jXHGICPPRIq6J18F9ry.jpg",
+    "keyword": "anti terror,bomb,assassination,middle east,cia,capitalism,globalization,loss of loved one,persia,war on terror,energy policy,petrol,conspiracy,",
+    "genre": "스릴러,드라마",
+    "title_en": "Syriana",
+    "cast\/0\/actor_id": 1461,
+    "cast\/0\/character": "Bob Barnes",
+    "cast\/1\/actor_id": 1892,
+    "cast\/1\/character": "Bryan Woodman",
+    "cast\/2\/actor_id": 2954,
+    "cast\/2\/character": "Bennett Holiday",
+    "cast\/3\/actor_id": 2955,
+    "cast\/3\/character": "Jimmy Pope",
+    "cast\/4\/actor_id": 2956,
+    "cast\/4\/character": "Julie Woodman",
+    "cast\/5\/actor_id": 227,
+    "cast\/5\/character": "Stan",
+    "director": "Stephen Gaghan,",
+    "date": "11\/23\/2005",
+    "vote_count": 1172,
+    "vote_aver": 6.425
+},
+{
+    "index": 17,
+    "id": 254,
+    "title": "킹콩",
+    "overview": "신비로운 해골섬의 전설적인 야수 '킹콩', 뉴욕으로 잡혀 온‘킹콩’이 도심 한복판에서 벌이는 숨막히는 액션과 환상적인 로맨스가 펼쳐진다!  새로운 작품에 대한 열정이 넘치던 영화감독 칼 덴햄(잭 블랙)은 거리에서 우연히 발굴한 매력적인 여인 앤 대로우(나오미 왓츠)와 지적인 시나리오 작가 잭 드리스콜(애드리안 브로디)과 함께 영화 촬영을 위해 지도상에도 존재하지 않는 미지의 공간인 해골섬을 찾아 떠난다.  그리고 수억만 년 전의 고대 정글이 고스란히 존재하는 해골섬에서 그들은 전설로만 들어왔던 거대한 킹콩과 맞닥뜨린다. 해골섬의 원주민들에게 붙잡혀 제물로 바쳐진 앤의 아름다움에 매료된 킹콩. 갑자기 섬에 존재하는 잔인한 공룡이 나타나 그녀를 공격하고 킹콩은 공룡과 혈전을 벌이며 그녀를 지켜낸다.  그러나 탐욕스러운 욕망에 사로잡힌 감독 덴햄은 킹콩이 앤에게 마음을 빼앗긴 틈을 타 킹콩을 뉴욕으로 생포해온다. 뉴욕 도심에서 사람들의 구경거리로 전락한 킹콩의 분노는 극에 달하고 야수의 본능을 드러내며 뉴욕 도심을 휩쓸기 시작한다. 인간들은 거대 병력을 동원해 킹콩에게 빗발치는 공격을 퍼붓고 킹콩은 공격을 피해 앤을 데리고 엠파이어 스테이트 빌딩으로 올라간다. 빌딩 꼭대기에서 거대한 위용을 드러내며 포효하는 킹콩. 사랑하는 앤을 보호하기 위해 잔인한 인간들에 맞서 처절한 사투를 벌이는데... 과연 거대한 야수 킹콩은 인간과의 대결에서 살아남을 것인가! 수억만 년 동안 잠들어있던 거대한 야수 킹콩의 전설이 드디어 뉴욕 도심을 뒤흔들며 다시 깨어난다!",
+    "poster_path": "\/fpYQjW9w0GlZxVS2fe3m7tDixzU.jpg",
+    "keyword": "new york city,show business,movie business,exotic island,human animal relationship,great depression,giant insect,remake,dinosaur,creature,kaiju,prehistoric creature,empire state building,giant ape,woman in peril,1930s,giant gorilla,king kong,",
+    "genre": "드라마,어드벤처",
+    "title_en": "King Kong",
+    "cast\/0\/actor_id": 3489,
+    "cast\/0\/character": "Ann Darrow",
+    "cast\/1\/actor_id": 70851,
+    "cast\/1\/character": "Carl Denham",
+    "cast\/2\/actor_id": 3490,
+    "cast\/2\/character": "Jack Driscoll",
+    "cast\/3\/actor_id": 3491,
+    "cast\/3\/character": "Captain Englehorn",
+    "cast\/4\/actor_id": 3492,
+    "cast\/4\/character": "Preston",
+    "cast\/5\/actor_id": 478,
+    "cast\/5\/character": "Jimmy",
+    "director": "Peter Jackson,",
+    "date": "12\/12\/2005",
+    "vote_count": 7025,
+    "vote_aver": 6.859
+},
+{
+    "index": 18,
+    "id": 257,
+    "title": "올리버 트위스트",
+    "overview": "고아인 올리버는 어린 나이에 강제노역을 당하게 되는데, 배고픔을 이기지 못하고 밥을 더 달라는 요구를 하다 문제아로 낙인이 찍힌다. 강제 노역소 관리자는 문제아로 찍힌 올리버를 장의사에게 넘긴다. 장의사 사무실에서 조금은 안정된 삶을 찾았지만 이내 장의사 집 아들과 말다툼으로 도망가게 된다. 무작정 도망 나온 올리버는 런던으로 향한다. 아는 사람이 아무도 없는 런던에서 올리버는 소매치기 다저를 만난다. 우연한 기회로 다저 일행과 같이 살게 된 올리버. 소매치기 수업을 착실히 받던 올리버는 실전을 시작한 첫날부터 경찰에 잡힌다. 올리브를 자신의 물건을 훔친 범인으로 오해한 브라운 로우 씨는 올리브를 자신의 밑에서 일하게 한다. 다저 일행은 올리버가 자신들의 정체를 밝힐까 두려워 올리버를 납치해 감금하지만, 올리버를 불쌍히 여긴 다지 일행의 낸시는 브라운로우에게 올리버에 대한 정보를 알려주고 올리버를 구출한다.",
+    "poster_path": "\/9gWuQzAWU13E0RzIzdSEna5PSql.jpg",
+    "keyword": "london, england,child abuse,street gang,runaway,child labour,based on novel or book,pickpocket,children's home,orphanage,thief,child,",
+    "genre": "드라마",
+    "title_en": "Oliver Twist",
+    "cast\/0\/actor_id": 3542,
+    "cast\/0\/character": "Oliver Twist",
+    "cast\/1\/actor_id": 2282,
+    "cast\/1\/character": "Fagin",
+    "cast\/2\/actor_id": 3543,
+    "cast\/2\/character": "Bill Sikes",
+    "cast\/3\/actor_id": 3544,
+    "cast\/3\/character": "The Artful Dodger",
+    "cast\/4\/actor_id": 3545,
+    "cast\/4\/character": "Mr. Brownlow",
+    "cast\/5\/actor_id": 3546,
+    "cast\/5\/character": "Nancy",
+    "director": "Roman Polanski,",
+    "date": "09\/23\/2005",
+    "vote_count": 1053,
+    "vote_aver": 6.751
+},
+{
+    "index": 19,
+    "id": 272,
+    "title": "배트맨 비긴즈",
+    "overview": "브루스 웨인은 어린 시절, 부모님이 길거리에서 피살되는 것을 눈 앞에서 지켜본 후 죄의식과 분노로 늘 고통 받는다. 복수의 욕망과 부모님의 가르침 사이에서 갈등하던 그는 악을 물리칠 방법을 터득하기 위해 고담시를 떠나 홀로 세상을 유랑하던 중 듀커드라는 수수께끼의 인물을 만나 가름침을 받고, 듀커드는 브루스에게 어둠의 사도들에 가입하라는 제안을 한다. 듀커드가 속해있는 어둠의 사도들은 라스 알 굴이 이끄는 범죄 소탕 조직. 그러나 브루스는 눈에는 눈, 이에는 이라는 강경책으로 응징하는 이들의 방법이 자신과는 맞지 않음을 깨닫고 고담시로 돌아온다.",
+    "poster_path": "\/sb3V2fPhNDRRUvHJW4pQaeHbDxm.jpg",
+    "keyword": "loss of loved one,martial arts,crime fighter,secret identity,undercover,vigilante,superhero,based on comic,rivalry,tragic hero,ninja,super power,haunted by the past,evil doctor,master villain,unfulfilled love,",
+    "genre": "범죄,액션,판타지",
+    "title_en": "Batman Begins",
+    "cast\/0\/actor_id": 3894,
+    "cast\/0\/character": "Bruce Wayne \/ Batman",
+    "cast\/1\/actor_id": 3895,
+    "cast\/1\/character": "Alfred Pennyworth",
+    "cast\/2\/actor_id": 3896,
+    "cast\/2\/character": "Henri Ducard \/ Ra's al Ghul",
+    "cast\/3\/actor_id": 3897,
+    "cast\/3\/character": "Rachel Dawes",
+    "cast\/4\/actor_id": 64,
+    "cast\/4\/character": "James Gordon",
+    "cast\/5\/actor_id": 2037,
+    "cast\/5\/character": "Jonathan Crane \/ Scarecrow",
+    "director": "Christopher Nolan,",
+    "date": "06\/10\/2005",
+    "vote_count": 18833,
+    "vote_aver": 7.7
+},
+]
 
 export default function Home() {
   return (
-    <>
-      <Head>
-        <title>Create Next App</title>
-        <meta name="description" content="Generated by create next app" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={styles.main} >
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.js</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-    </>
+    <HomeWrapper>
+      <Navigation />
+      <HomeMovieCard title={"당신을 위한 추천 영화"} lists={lists}/>
+      <HomeMovieCard title={"이달의 추천 영화"} lists={lists2}/>
+    </HomeWrapper>
   )
 }
+
+const HomeWrapper = styled.div`
+  margin-bottom: 10rem;
+`
