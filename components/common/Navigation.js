@@ -12,11 +12,16 @@ export default function Navigation(){
                         className={router.asPath === "/" ? "active" : ''}
                         onClick={() => router.push("/")}
                     >메인</li>
+
                     <li 
                         className={router.asPath.includes("search") ? "active" : ''} 
                         onClick={() => router.push("/infos/search")}
                     >영화검색</li>
-                    <li>영화추천</li>
+
+                    <li 
+                        className={router.asPath.includes("recommend") ? "active" : ''} 
+                        onClick={() => router.push("/infos/recommend")}
+                    >영화추천</li>
                 </ul>
                 <ul>
                     <li>로그인</li>

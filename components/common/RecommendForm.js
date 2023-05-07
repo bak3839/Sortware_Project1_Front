@@ -4,28 +4,35 @@ import movie from '../../pages/movie_data.json';
 import { useState, useEffect, useRef, React } from 'react';
 import useDebounce from '@/pages/infos/useDebounce';
 import MovieCard from './MovieCard';
+import HomeMovieCard from '@/components/HomeMovieCard';
+//import axios from "axios";
 
-function find(search_title) {
-    if(search_title == null) return null;
+// function MovieInfo() {
+//     const [movieData, setMovieData] = useState(null); // 추천id값을 배열로 받음
+//     const [movieId, setMovieId] = useState(null); // 테스트용
 
-    let list = [];
-    let title;
-    let poster_path;
-    let id;
+//     // 엑시오스 통신, 검색창에서 제목으로 검색하고, 그 제목의 id값을 여기로 넣어줘야댐
+//     const test = async () => {
+//         try {
+//             const res = await axios.get(
+//                 `http://localhost:8080/search/recommand?Movieid=${movieId}`
+//             );
+//             console.log(res.data);  // 로그에 출력
+//             setMovieData(res.data); // movieData에 배열형태로 저장
+//         } catch (error) {
+//             console.error(error);
+//         }
+//     };
 
-    for (let i = 0; i < movie.movie_data.length; i++) {
-        if (movie.movie_data[i].title.includes(search_title)) {
-            
-            id = movie.movie_data[i].id;
-            title = movie.movie_data[i].title;
-            poster_path = movie.movie_data[i].poster_path;
-
-            list.push(<MovieCard key={id} index={i} id={id} title={title} poster_path={poster_path} />);
-        }
-    }
-
-    return list;
-} 
+//     // 테스트용
+//     return (
+//         <div>
+//             <input type="text" onChange={(e) => setMovieId(e.target.value)} />
+//             <button onClick={test}>Search</button>
+//             <p>{movieData[movieId]}</p>
+//         </div>
+//     )
+// }
 /**
  * 제목으로 연관 영화 검색해서 미리보기 리스트 반환
  * @param {*} title 
@@ -49,16 +56,44 @@ function searchList(title) {
     return list;
 }
 
-function genreBasedSearch(movieIndexs){
-    if(movieIndexs.length == 0) return;
+function SummaryBased(moviedata){
+    if(moviedata == null) return null;
 
     let list = [];
     let title;
     let poster_path;
     let id;
 
-    for (let i = 0; i < movieIndexs.length; i++) {
-        let index = movieIndexs[i];
+    for (let i = 0; i < 10; i++) {
+        let index = moviedata[i];
+        let data = movie.movie_data[index];
+
+        id = data.id;
+        title = data.title;
+        poster_path = data.poster_path;
+
+        list.push(<MovieCard key={id} index={i} id={id} title={title} poster_path={poster_path} />);
+    }
+                   
+    list = <div className='container'>
+        <p>줄거리 기반 추천 영화</p>
+        <div className='movieBox'>
+            {list}
+        </div>
+    </div>
+    return list;
+}
+
+function KeywordBased(moviedata){
+    if(moviedata == null) return null;
+
+    let list = [];
+    let title;
+    let poster_path;
+    let id;
+
+    for (let i = 10; i < 20; i++) {
+        let index = moviedata[i];
         let data = movie.movie_data[index];
 
         id = data.id;
@@ -68,21 +103,44 @@ function genreBasedSearch(movieIndexs){
         list.push(<MovieCard key={id} index={i} id={id} title={title} poster_path={poster_path} />);
     }
 
+    list = <div className='container'>
+        <p>키워드 기반 추천 영화</p>
+        <div className='movieBox'>
+            {list}
+        </div>
+    </div>
+
     return list;
 }
 
-function SearchForm() {
+function RecommendForm() {
     const [flag, setFlag] = useState(true);
     const [title, setTitle] = useState("");
     const [list, setList] = useState(null);
     const [movielist, setMovielist] = useState(null);
     const [idx, setIdx] = useState(-1);
     const [notDebounce, setnotDebounce] = useState(false);
-
+    const [recommendFlag, setRecommendFlag] = useState(true);
     const inputRef = useRef();
     const ulRef = useRef(null);
 
     const debounceValue = useDebounce(title);
+
+//     const [movieData, setMovieData] = useState(null); // 추천id값을 배열로 받음
+//     const [movieId, setMovieId] = useState(null); // 테스트용
+
+//     // 엑시오스 통신, 검색창에서 제목으로 검색하고, 그 제목의 id값을 여기로 넣어줘야댐
+//     const test = async () => {
+//         try {
+//             const res = await axios.get(
+//                 `http://localhost:8080/search/recommand?Movieid=${movieId}`
+//             );
+//             console.log(res.data);  // 로그에 출력
+//             setMovieData(res.data); // movieData에 배열형태로 저장
+//         } catch (error) {
+//             console.error(error);
+//         }
+//     };
 
     // target이 inputRef이 등록된 하위 컨테이너가 아닐때 실행
     const handleClickOutside = ({ target }) => {     
@@ -152,9 +210,21 @@ function SearchForm() {
         }       
     }  
 
+    const [lists, setLists] = useState(null);
+    const [lists2, setLists2] = useState(null);
+
+    // 임의 배열 주석 처리 해주기
+    let moviedata = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+    
     const onKeyDown = (e) => {
         if(e.key == 'Enter') {
-            setMovielist(find(title));
+            // 여기서 test 함수 실행 하고 216번째 줄 주석 처리 하면 됨
+            
+            setRecommendFlag(false); // 밑에 컴포넌트 나오게 하는 변수
+            
+            // 각 추천 영화 jsx 코드로 반환
+            setLists(SummaryBased(moviedata));
+            setLists2(KeywordBased(moviedata));
         }
         else if(e.key == 'ArrowDown' || e.key == 'ArrowUp'){
             handleKeyDown(e);
@@ -183,102 +253,24 @@ function SearchForm() {
     useEffect(()=>{
         console.log(flag)      
     },[flag])
-
-    
-
-    // --------------------------- 장르 선택--------------------------------//
-    const genre = ['범죄','드라마','액션','스릴러','SF','멜로','다큐멘터리','로맨스','코미디','가족','판타지','미스터리','공포','어드벤처','전쟁','사극','서부극','애니메이션'];
-    let code1 = [];
-    let code2 = [];
-
-    // onChange함수를 사용하여 체크박스 상태관리
-    const [checkedList, setCheckedList] = useState([]);
-    
-    const onCheckedElement = (checked, item) => {
-        console.log(item)
-
-        if (checked) {
-            setCheckedList([...checkedList, item]);
-        } else if (!checked) {
-            setCheckedList(checkedList.filter(el => el !== item));
-        }
-    };
-
-    for(let i = 0; i < 9; i++) {
-        let now = genre[i];
-        code1.push(
-        <span>
-            <input name="genre" id={now} type='checkbox' onChange={e => {
-                onCheckedElement(e.target.checked, e.target.id);
-            }}/>
-            <label htmlFor={now}>{now}</label>
-        </span>)
-    }
-
-    for(let i = 9; i < 18; i++) {
-        let now = genre[i];
-        code2.push(
-        <span>
-            <input name="genre" id={now} type='checkbox' onChange={e => {
-                onCheckedElement(e.target.checked, e.target.id);
-            }}/>
-            <label htmlFor={now}>{now}</label>
-        </span>)
-    }
-    // --------------------------- 장르 선택--------------------------------//
-
-    /**
-     * 선택된 장르 기반으로 영화 검색
-     * @param {*} e 
-     */
-    const genreSearch = (e) => {
-        if (checkedList.length == 0) return;
-
-        let movieIndex = []; // 처음 장르가 포함된 영화의 인덱스
-        let tmp = [];
-        let genre = checkedList;
-        console.log(genre);
-
-        for (let i = 0; i < movie.movie_data.length; i++) {
-            let data = movie.movie_data[i].genre;
-            if (data.includes(genre[0])) {
-                console.log(i)
-                movieIndex.push(i);
-            }
-        }
-
-        for (let i = 1; i < genre.length; i++) {
-            tmp = movieIndex;
-
-            for (let j = 0; j < movieIndex.length; j++) {
-                let index = movieIndex[j];
-                let data = movie.movie_data[index].genre;
-
-                if (!data.includes(genre[i])) {
-                    tmp = tmp.filter(now => now != index)
-                }
-            }
-            movieIndex = tmp;
-            tmp = [];
-        }
-
-        setMovielist(genreBasedSearch(movieIndex));
-    }
-
+   
     return (
         <SearchFormWrapper>
             <div className='searchBox'>
                 <div className="container">
-                    <input 
-                        type='text' 
-                        key={100} 
-                        value={title} 
-                        ref={inputRef} 
-                        placeholder='영화 제목 입력' 
-                        onKeyDown={(e) => onKeyDown(e)} 
-                        onChange={(e) => onChange(e)}
-                        onClick={(e) => onClick(e)} 
-                    />
+                    <span>
+                        <input
+                            type='text'
+                            key={100}
+                            value={title}
+                            ref={inputRef}
+                            placeholder='재미있게 본 영화 입력'
+                            onKeyDown={(e) => onKeyDown(e)}
+                            onChange={(e) => onChange(e)}
+                            onClick={(e) => onClick(e)}
+                        />
+                    </span>
+                    
                     {flag ? null : 
                         <div className='list'>
                             <ul ref={ulRef}>
@@ -291,54 +283,35 @@ function SearchForm() {
                         </div>
                     }
                 </div> 
-            </div>
-            <div className='container'>
-                <ul className="filter">
-                    <li>
-                        <p>장르</p>
-                        <div>
-                            {code1}
-                        </div>
-                        <div>
-                            {code2}
-                        </div>
-                    </li>
-                    <li>
-                        <p>카테고리</p>
-                        <div>
-                            <span>
-                                <input name="category" id="meta" type='checkbox' />
-                                <label htmlFor='meta'>메타버스</label>
-                            </span>
-                            <span>
-                                <input name="category" id="alien" type='checkbox' />
-                                <label htmlFor='alien'>외계</label>
-                            </span>
-                        </div>
-                    </li>
-                    <li>
-                        <p>제작사</p>
-                        <div>
-                            <span>
-                                <input name="maker" id="marvel" type='checkbox' />
-                                <label htmlFor='marvel'>마블</label>
-                            </span>
-                            <span>
-                                <input name="maker" id="desiny" type='checkbox' />
-                                <label htmlFor='desiny'>디즈니</label>
-                            </span>
-                        </div>
-                    </li>
-                </ul>
-                <button style={{ fontSize: "20px" }} onClick={genreSearch}>검색</button>
-            </div>
-
+            </div>           
             <div className="movieBox container">
                 {movielist}
             </div>
+            {recommendFlag ? null :
+            <CardWrapper>
+                <div>
+                    {lists} {/*줄거리 기반*/}
+                    {lists2} {/*키워드 기반*/}
+                </div>
+            </CardWrapper>}
+
         </SearchFormWrapper>
     )
 }
+
+const CardWrapper = styled.div`
+    margin-top: 5rem;
+    p{
+        font-size: 2.8rem;
+        font-weight: 900;
+        margin-bottom: 2.5rem;
+    }
+    .movieBox{
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 2rem;
+    }
+`
 
 const SearchFormWrapper = styled.div`
     width: 100%;
@@ -354,7 +327,11 @@ const SearchFormWrapper = styled.div`
                 border: none;
                 font-size: 1.6rem;
                 font-weight: 900;
+                
+                justify-content: right;
+                align-items: right;
             }
+            
             .list{
                 width: 100%;
                 li{
@@ -423,4 +400,4 @@ const SearchFormWrapper = styled.div`
 
 `
 
-export default SearchForm;
+export default RecommendForm;

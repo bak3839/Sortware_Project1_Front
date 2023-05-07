@@ -21,6 +21,10 @@ export default function MovieCard(props) {
             font-size: 1.4rem;
             font-weight: 800;
         }
+        &:hover{
+            top: -3px;
+            box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+        }
     `
     return (
         <MovieCard>
