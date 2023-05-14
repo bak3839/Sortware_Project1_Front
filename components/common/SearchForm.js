@@ -12,17 +12,24 @@ function find(search_title) {
     let title;
     let poster_path;
     let id;
+    let rating;
 
     for (let i = 0; i < movie.movie_data.length; i++) {
         if (movie.movie_data[i].title.includes(search_title)) {
+            let data = movie.movie_data[i];
             
-            id = movie.movie_data[i].id;
-            title = movie.movie_data[i].title;
-            poster_path = movie.movie_data[i].poster_path;
+            id = data.id;
+            title = data.title;
+            poster_path = data.poster_path;
+            rating = data.vote_count;
 
-            list.push(<MovieCard key={id} index={i} id={id} title={title} poster_path={poster_path} />);
+            list.push({ rating: rating, id: id, index: i, title: title, poster_path: poster_path });
         }
     }
+
+    list.sort(function(a, b){
+        return b.rating - a.rating;
+    });
 
     return list;
 } 
@@ -56,6 +63,7 @@ function genreBasedSearch(movieIndexs){
     let title;
     let poster_path;
     let id;
+    let rating;
 
     for (let i = 0; i < movieIndexs.length; i++) {
         let index = movieIndexs[i];
@@ -64,9 +72,16 @@ function genreBasedSearch(movieIndexs){
         id = data.id;
         title = data.title;
         poster_path = data.poster_path;
+        rating = data.vote_count;
 
-        list.push(<MovieCard key={id} index={i} id={id} title={title} poster_path={poster_path} />);
+        list.push({ rating: rating, id: id, index: index, title: title, poster_path: poster_path });
+
+        //list.push(<MovieCard key={id} index={index} id={id} title={title} poster_path={poster_path} />);
     }
+    
+    list.sort(function(a, b){
+        return b.rating - a.rating;
+    });
 
     return list;
 }
@@ -154,6 +169,7 @@ function SearchForm() {
 
     const onKeyDown = (e) => {
         if(e.key == 'Enter') {
+            setPageBtn(true);
             setMovielist(find(title));
         }
         else if(e.key == 'ArrowDown' || e.key == 'ArrowUp'){
@@ -178,13 +194,7 @@ function SearchForm() {
         else {
             setList(searchList(e.target.value));
         }
-    }
-
-    useEffect(()=>{
-        console.log(flag)      
-    },[flag])
-
-    
+    }  
 
     // --------------------------- 장르 선택--------------------------------//
     const genre = ['범죄','드라마','액션','스릴러','SF','멜로','다큐멘터리','로맨스','코미디','가족','판타지','미스터리','공포','어드벤처','전쟁','사극','서부극','애니메이션'];
@@ -240,10 +250,10 @@ function SearchForm() {
         console.log(genre);
 
         for (let i = 0; i < movie.movie_data.length; i++) {
-            let data = movie.movie_data[i].genre;
-            if (data.includes(genre[0])) {
-                console.log(i)
-                movieIndex.push(i);
+            let data = movie.movie_data[i];
+
+            if (data.genre.includes(genre[0])) {
+                movieIndex.push(data.index);
             }
         }
 
@@ -261,9 +271,51 @@ function SearchForm() {
             movieIndex = tmp;
             tmp = [];
         }
-
+        setPageBtn(true);
         setMovielist(genreBasedSearch(movieIndex));
     }
+
+    // ------------------- 영화 30개씩 페이지 나누기 ---------------//
+    const moviePerPage = 30;
+    const [pageBtn, setPageBtn] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [currentMovies, setCurrentMovies] = useState([]);
+    const [pageNum, setPageNum] = useState([]);
+    
+    const [totalMovies, setTotalMovies] = useState(0);
+    let indexOfLastMovie = currentPage * moviePerPage;
+    let indexOfFirstMovie = indexOfLastMovie - moviePerPage;
+
+    // 페이지 변경시 currentMovies에 해당 페이지에 들어갈 30개 영화 리스트에서 슬라이스
+    useEffect(() => {
+        if(movielist == null) return;
+
+        let button = [];
+        indexOfLastMovie = currentPage * moviePerPage;
+        indexOfFirstMovie = indexOfLastMovie - moviePerPage;
+        setCurrentMovies(movielist?.slice(indexOfFirstMovie, indexOfLastMovie));       
+    },[currentPage, movielist]);
+
+    // 영화 리스트 변경시 totalMovies 값 변경
+    useEffect(() => {
+        setTotalMovies(movielist?.length);
+    }, [movielist])
+    
+    const nextPage = () => {     
+        if (currentPage <= parseInt(totalMovies) / parseInt(moviePerPage)) {
+            console.log("next");
+            setCurrentPage(currentPage + 1);
+        }
+    };
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const jumpToPage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };     
 
     return (
         <SearchFormWrapper>
@@ -334,9 +386,18 @@ function SearchForm() {
             </div>
 
             <div className="movieBox container">
-                {movielist}
+                {/* {currentMovies}                */}
+                {currentMovies.map((m) => (
+                    <MovieCard key={m.id} index={m.index} title={m.title} poster_path={m.poster_path} />
+                ))}
             </div>
-        </SearchFormWrapper>
+            {pageBtn ? <div className="container">
+                <button style={{ fontSize: "20px" }} onClick={prevPage}>이전 페이지</button>
+                {/* {pageNum} */}
+                <button style={{ fontSize: "20px" }} onClick={nextPage}>다음 페이지</button>
+            </div> : null}
+            
+        </SearchFormWrapper>        
     )
 }
 
@@ -420,7 +481,6 @@ const SearchFormWrapper = styled.div`
         grid-template-columns: repeat(5, 1fr);
         gap: 2rem
     }
-
 `
 
 export default SearchForm;
