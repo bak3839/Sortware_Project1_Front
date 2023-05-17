@@ -28,7 +28,7 @@ export default function MovieCard(props) {
     `
     return (
         <MovieCard>
-            <a href={page}>
+            <a href={page} target='_blank'>
                 <div>
                     <div class="img">
                         <img src={url + path}></img>

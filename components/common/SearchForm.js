@@ -283,23 +283,60 @@ function SearchForm() {
     const [pageNum, setPageNum] = useState([]);
     
     const [totalMovies, setTotalMovies] = useState(0);
+    const [btnStart, setBtnStart] = useState(1);
+    const [maxPage, setMaxPage] = useState(100);
+    
     let indexOfLastMovie = currentPage * moviePerPage;
     let indexOfFirstMovie = indexOfLastMovie - moviePerPage;
+    let left = '<';
+    let right = '>';
+
+    const buttonArray = (num) => {
+        const button = [];
+        //maxPage = Math.ceil(parseInt(totalMovies) / parseInt(moviePerPage));
+        //setMaxPage(Math.ceil(parseInt(totalMovies) / parseInt(moviePerPage)));
+        console.log(totalMovies);
+
+        for (let i = (num - 1) * 5 + 1; i <= num * 5 && i <= Math.ceil(parseInt(totalMovies) / parseInt(moviePerPage)); i++) {
+            if (i == currentPage) {
+                button.push(
+                    <button onClick={() => jumpToPage(i)} className="btnCur">
+                        {i}
+                    </button>
+                );
+            } else {
+                button.push(
+                    <button onClick={() => jumpToPage(i)} className="btn">
+                        {i}
+                    </button>
+                );
+            }
+        }
+        return button;
+    };
+
+    // 영화 리스트 변경시 totalMovies 값 변경
+    useEffect(() => {
+        setTotalMovies(movielist?.length);
+        setCurrentPage(1);       
+    },[movielist])
 
     // 페이지 변경시 currentMovies에 해당 페이지에 들어갈 30개 영화 리스트에서 슬라이스
     useEffect(() => {
         if(movielist == null) return;
 
-        let button = [];
         indexOfLastMovie = currentPage * moviePerPage;
         indexOfFirstMovie = indexOfLastMovie - moviePerPage;
-        setCurrentMovies(movielist?.slice(indexOfFirstMovie, indexOfLastMovie));       
-    },[currentPage, movielist]);
+        setCurrentMovies(movielist?.slice(indexOfFirstMovie, indexOfLastMovie));
 
-    // 영화 리스트 변경시 totalMovies 값 변경
+        setBtnStart(currentPage / 5); // 버튼 시작 1~5 / 6~10 까지 표시하기 위함    
+    },[currentPage, movielist]); 
+
+    // 함수를 실행 시켜서 버튼태그가 담긴 배열 가져오기 매개변수로 시작 버튼 번호 넘기기
     useEffect(() => {
-        setTotalMovies(movielist?.length);
-    }, [movielist])
+        const buttons = buttonArray(Math.ceil(btnStart));
+        setPageNum(buttons); 
+    },[btnStart, totalMovies]);
     
     const nextPage = () => {     
         if (currentPage <= parseInt(totalMovies) / parseInt(moviePerPage)) {
@@ -386,15 +423,14 @@ function SearchForm() {
             </div>
 
             <div className="movieBox container">
-                {/* {currentMovies}                */}
                 {currentMovies.map((m) => (
                     <MovieCard key={m.id} index={m.index} title={m.title} poster_path={m.poster_path} />
                 ))}
             </div>
-            {pageBtn ? <div className="container">
-                <button style={{ fontSize: "20px" }} onClick={prevPage}>이전 페이지</button>
-                {/* {pageNum} */}
-                <button style={{ fontSize: "20px" }} onClick={nextPage}>다음 페이지</button>
+            {pageBtn ? <div className="btnBox">
+                <button onClick={prevPage} className='btnShift'>{left}</button>
+                <span className='btnLine'>{pageNum}</span>
+                <button onClick={nextPage} className='btnShift'>{right}</button>
             </div> : null}
             
         </SearchFormWrapper>        
@@ -480,6 +516,81 @@ const SearchFormWrapper = styled.div`
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 2rem
+    }
+    .btnBox{
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        margin-top: 5rem;
+        gap: 0.5625rem;
+        
+    }
+    .btnLine{
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        row-gap: 0.5625rem;
+    }
+    .btnShift{
+        position: relative;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        min-width: 3.6rem;
+        height: 3.6rem;
+        border-radius: 50%;
+        background-color: rgba(215, 226, 235, 0.5);
+        border:0;
+        &:hover{
+            background-color: rgb(105, 104, 104);
+        }
+    }
+    .btn {
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        height: 3.6rem;
+        padding: 0.3125rem 0.375rem;
+        min-width: 3.6rem;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: rgb(38, 55, 71);
+        background-color: rgba(215, 226, 235, 0.5);
+        white-space: nowrap;
+        border:0;
+        &:hover{
+            background-color: rgb(105, 104, 104);
+        }       
+    }
+    .btnCur{
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        height: 3.6rem;
+        padding: 0.3125rem 0.375rem;
+        min-width: 3.6rem;
+        text-align: center;
+        font-size: 1.5rem;
+        white-space: nowrap;
+        position: relative;
+        z-index: 2;
+        font-weight: 700;
+        color: rgb(255, 255, 255);
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 0.25rem 0.625rem;
+        background-color: rgb(0, 0, 0);
+        border-radius: 0.375rem !important;
     }
 `
 
