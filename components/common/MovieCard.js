@@ -27,7 +27,7 @@ export default function MovieCard(props) {
         }
     `
     return (
-        <MovieCard>
+        <MovieCard id ={index}>
             <a href={page} target='_blank'>
                 <div>
                     <div class="img">

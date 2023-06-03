@@ -16,6 +16,7 @@ export default function MovieInfo() {
         let genre = data.genre;
         let overview = data.overview;
         let keyword = data.keyword;
+        let actor_name = "";
 
         let ac_data = actor.actor_data;
         let actorId = [];
@@ -31,13 +32,15 @@ export default function MovieInfo() {
             for(let j = 0; j < ac_data.length; j++){
                 if(ac_data[j].actor_id == now){
                     actorPath.push(ac_data[j].profile_path);
+                    actor_name = actor_name.concat(ac_data[j].name, ', ');
                     break;
                 }
             }
         }
+        actor_name = actor_name.slice(0, -2);
 
         return (
-            <MovieInfoWrapper>
+            <MovieInfoWrapper poster={url+path}>
                 {/* <style jsx global>
                 {
                     `
@@ -56,14 +59,22 @@ export default function MovieInfo() {
                         <h1>{title}</h1>
                         <ul>
                             <li>{title_en} /</li>
-                            <li>2h 49min  /</li>
                             <li>{genre}</li>
                         </ul>
                         <h5>SUMMARY</h5>
                         <p className="overview">{overview}</p>
-                        <p className="actor">Matthew McConaughey, Anne Hathaway, Jessica Chastain</p>
+                        <p className="actor">{actor_name}</p>
                         <div className="actorImg">
-                            <div>
+                            {actorPath[0] ? <div>
+                                <img src={url + actorPath[0]} />
+                            </div> : null}
+                            {actorPath[1] ? <div>
+                                <img src={url + actorPath[1]} />
+                            </div> : null}
+                            {actorPath[2] ? <div>
+                                <img src={url + actorPath[2]} />
+                            </div> : null}
+                            {/* <div>
                                 <img src={url + actorPath[0]} />
                             </div>
                             <div>
@@ -71,7 +82,7 @@ export default function MovieInfo() {
                             </div>
                             <div>
                                 <img src={url + actorPath[2]} />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -83,6 +94,10 @@ export default function MovieInfo() {
 const MovieInfoWrapper = styled.div`
     background:#000;
     padding: 5rem 0;
+    // background: linear-gradient(rgba(30, 27, 38, 0.95), rgba(30, 27, 38, 0.95)), url(${props => props.poster});
+    // background-position: center;
+    // background-size: cover;
+    // background-repeat: no-repeat;
     >div{
         display: flex;
         justify-content: space-between;
@@ -120,11 +135,12 @@ const MovieInfoWrapper = styled.div`
             }
             p{
                 margin: 1rem 0 3rem;
-                font-size: 1.4rem;
+                font-size: 1.5rem;
                 line-height: 1.8;
                 opacity: 0.8;
 
                 &.actor{
+                    font-size: 1.8rem;
                     margin-bottom: 1.5rem;
                 }
             }

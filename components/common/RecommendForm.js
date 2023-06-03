@@ -1,41 +1,13 @@
-import styles from '@/styles/Home.module.css';
 import styled from 'styled-components';
 import movie from '../../pages/movie_data.json';
 import { useState, useEffect, useRef, React } from 'react';
 import useDebounce from '@/pages/infos/useDebounce';
 import MovieCard from './MovieCard';
-import HomeMovieCard from '@/components/HomeMovieCard';
-//import axios from "axios";
+import axios from "axios";
 
-// function MovieInfo() {
-//     const [movieData, setMovieData] = useState(null); // 추천id값을 배열로 받음
-//     const [movieId, setMovieId] = useState(null); // 테스트용
-
-//     // 엑시오스 통신, 검색창에서 제목으로 검색하고, 그 제목의 id값을 여기로 넣어줘야댐
-//     const test = async () => {
-//         try {
-//             const res = await axios.get(
-//                 `http://localhost:8080/search/recommand?Movieid=${movieId}`
-//             );
-//             console.log(res.data);  // 로그에 출력
-//             setMovieData(res.data); // movieData에 배열형태로 저장
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     };
-
-//     // 테스트용
-//     return (
-//         <div>
-//             <input type="text" onChange={(e) => setMovieId(e.target.value)} />
-//             <button onClick={test}>Search</button>
-//             <p>{movieData[movieId]}</p>
-//         </div>
-//     )
-// }
 /**
  * 제목으로 연관 영화 검색해서 미리보기 리스트 반환
- * @param {*} title 
+ * @param {*} title
  */
 function searchList(title) {
     let list = [];
@@ -47,7 +19,7 @@ function searchList(title) {
         if (movie.movie_data[i].title.includes(title)) {
             cnt = cnt + 1;
 
-            let page = '/infos/' + i;           
+            let page = '/infos/' + i;
             let title = movie.movie_data[i].title;
             list.push([page, title]);
         }
@@ -65,16 +37,22 @@ function SummaryBased(moviedata){
     let id;
 
     for (let i = 0; i < 10; i++) {
-        let index = moviedata[i];
-        let data = movie.movie_data[index];
+        id = moviedata[i];
 
-        id = data.id;
-        title = data.title;
-        poster_path = data.poster_path;
+        for (let j = 0; j < movie.movie_data.length; j++) {
+            if (movie.movie_data[j].id == id) {
 
-        list.push(<MovieCard key={id} index={i} id={id} title={title} poster_path={poster_path} />);
+                let data = movie.movie_data[j];
+                title = data.title;
+                poster_path = data.poster_path;
+
+                list.push(<MovieCard key={id} index={j} id={id} title={title} poster_path={poster_path} />);
+                break;
+            }
+        }
     }
-                   
+    console.log(list);
+
     list = <div className='container'>
         <p>줄거리 기반 추천 영화</p>
         <div className='movieBox'>
@@ -93,15 +71,21 @@ function KeywordBased(moviedata){
     let id;
 
     for (let i = 10; i < 20; i++) {
-        let index = moviedata[i];
-        let data = movie.movie_data[index];
+        id = moviedata[i];
 
-        id = data.id;
-        title = data.title;
-        poster_path = data.poster_path;
+        for (let j = 0; j < movie.movie_data.length; j++) {
+            if (movie.movie_data[j].id == id) {
 
-        list.push(<MovieCard key={id} index={i} id={id} title={title} poster_path={poster_path} />);
+                let data = movie.movie_data[j];
+                title = data.title;
+                poster_path = data.poster_path;
+
+                list.push(<MovieCard key={id} index={j} id={id} title={title} poster_path={poster_path} />);
+                break;
+            }
+        }
     }
+    console.log(list);
 
     list = <div className='container'>
         <p>키워드 기반 추천 영화</p>
@@ -116,6 +100,7 @@ function KeywordBased(moviedata){
 function RecommendForm() {
     const [flag, setFlag] = useState(true);
     const [title, setTitle] = useState("");
+    const [movieId, setMovieId] = useState(null);
     const [list, setList] = useState(null);
     const [movielist, setMovielist] = useState(null);
     const [idx, setIdx] = useState(-1);
@@ -126,26 +111,12 @@ function RecommendForm() {
 
     const debounceValue = useDebounce(title);
 
-//     const [movieData, setMovieData] = useState(null); // 추천id값을 배열로 받음
-//     const [movieId, setMovieId] = useState(null); // 테스트용
-
-//     // 엑시오스 통신, 검색창에서 제목으로 검색하고, 그 제목의 id값을 여기로 넣어줘야댐
-//     const test = async () => {
-//         try {
-//             const res = await axios.get(
-//                 `http://localhost:8080/search/recommand?Movieid=${movieId}`
-//             );
-//             console.log(res.data);  // 로그에 출력
-//             setMovieData(res.data); // movieData에 배열형태로 저장
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     };
+    const [moviedata, setMovieData] = useState([]); // 추천id값을 배열로 받음
 
     // target이 inputRef이 등록된 하위 컨테이너가 아닐때 실행
-    const handleClickOutside = ({ target }) => {     
+    const handleClickOutside = ({ target }) => {
         if (flag && !inputRef.current.contains(target)) {
-            setFlag(true);          
+            setFlag(true);
         }
         setIdx(-1);
         setnotDebounce(false);
@@ -168,12 +139,12 @@ function RecommendForm() {
             setFlag(false);
         }
         if (debounceValue && !notDebounce) getMovies();
-    }, [debounceValue]);   
+    }, [debounceValue]);
 
     useEffect(() => {
         if(list != null) {
             setFlag(false);
-        }     
+        }
     }, [list])
 
     useEffect(() => {
@@ -181,14 +152,14 @@ function RecommendForm() {
         setTitle(list[idx][1]);
         setnotDebounce(true);
     },[idx])
-    
+
     function handleKeyDown(e) {
         const { key } = e;
         const listItems = ulRef.current.childElementCount ? ulRef.current.childElementCount:null;
         if(listItems == null) return;
 
         let nextIdx = 0;
-        
+
         if (key == 'ArrowDown') {
             e.preventDefault();
 
@@ -201,30 +172,58 @@ function RecommendForm() {
 
         else if (key == 'ArrowUp') {
             e.preventDefault();
-            
+
             nextIdx = idx - 1
             if (nextIdx < 0) {
                 nextIdx = listItems - 1;
             }
             setIdx(nextIdx);
-        }       
-    }  
+        }
+    }
 
     const [lists, setLists] = useState(null);
     const [lists2, setLists2] = useState(null);
 
     // 임의 배열 주석 처리 해주기
-    let moviedata = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-    
-    const onKeyDown = (e) => {
+    // let moviedata = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+
+    useEffect(() => {
+        if(movieId == null){
+            return;
+        }
+        async function fetchRecommendations(movieId) {
+
+            try {
+                const res = await axios.get('http://localhost:8080/search/recommand?Movieid=' + movieId);
+                //console.log(res.data); // 출력
+                setMovieData(res.data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchRecommendations(movieId);
+    },[movieId]);
+
+    useEffect(() => {
+        if (moviedata.length == 0) {
+            return;
+        }
+        setRecommendFlag(false); // 밑에 컴포넌트 나오게 하는 변수
+
+        // 각 추천 영화 jsx 코드로 반환
+        setLists(SummaryBased(moviedata));
+        setLists2(KeywordBased(moviedata));
+    }, [moviedata])
+
+    const OnKeyDown = (e) => {
         if(e.key == 'Enter') {
             // 여기서 test 함수 실행 하고 216번째 줄 주석 처리 하면 됨
-            
-            setRecommendFlag(false); // 밑에 컴포넌트 나오게 하는 변수
-            
-            // 각 추천 영화 jsx 코드로 반환
-            setLists(SummaryBased(moviedata));
-            setLists2(KeywordBased(moviedata));
+            for (let i = 0; i < movie.movie_data.length; i++) {
+                if (movie.movie_data[i].title == e.target.value) {
+                    setMovieId(movie.movie_data[i].id)
+                    break;
+                }
+            }
         }
         else if(e.key == 'ArrowDown' || e.key == 'ArrowUp'){
             handleKeyDown(e);
@@ -234,7 +233,7 @@ function RecommendForm() {
             setnotDebounce(false);
         }
     }
-    const onChange = (e) => { 
+    const onChange = (e) => {
         setTitle(e.target.value);
         if(e.target.value == ""){
             setFlag(true);
@@ -251,9 +250,9 @@ function RecommendForm() {
     }
 
     useEffect(()=>{
-        console.log(flag)      
+        console.log(flag)
     },[flag])
-   
+
     return (
         <SearchFormWrapper>
             <div className='searchBox'>
@@ -265,138 +264,138 @@ function RecommendForm() {
                             value={title}
                             ref={inputRef}
                             placeholder='재미있게 본 영화 입력'
-                            onKeyDown={(e) => onKeyDown(e)}
+                            onKeyDown={(e) => OnKeyDown(e)}
                             onChange={(e) => onChange(e)}
                             onClick={(e) => onClick(e)}
                         />
                     </span>
-                    
-                    {flag ? null : 
+
+                    {flag ? null :
                         <div className='list'>
                             <ul ref={ulRef}>
-                                {list.map((item, index) => (   
+                                {list.map((item, index) => (
                                     <li key={index}>
-                                        <a href={item[0]} className={idx == index ? "active" : ""}>{item[1]}</a>                      
-                                    </li>                            
+                                        <a href={item[0]} className={idx == index ? "active" : ""}>{item[1]}</a>
+                                    </li>
                                 ))}
                             </ul>
                         </div>
                     }
-                </div> 
-            </div>           
+                </div>
+            </div>
             <div className="movieBox container">
                 {movielist}
             </div>
             {recommendFlag ? null :
-            <CardWrapper>
-                <div>
-                    {lists} {/*줄거리 기반*/}
-                    {lists2} {/*키워드 기반*/}
-                </div>
-            </CardWrapper>}
+                <CardWrapper>
+                    <div>
+                        {lists} {/*줄거리 기반*/}
+                        {lists2} {/*키워드 기반*/}
+                    </div>
+                </CardWrapper>}
 
         </SearchFormWrapper>
     )
 }
 
 const CardWrapper = styled.div`
-    margin-top: 5rem;
-    p{
-        font-size: 2.8rem;
-        font-weight: 900;
-        margin-bottom: 2.5rem;
-    }
-    .movieBox{
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 2rem;
-    }
+  margin-top: 5rem;
+  p{
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin-bottom: 2.5rem;
+  }
+  .movieBox{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+  }
 `
 
 const SearchFormWrapper = styled.div`
-    width: 100%;
-    .searchBox{
-        padding: 2rem 0;
-        background: #000;
-        >.container{
-            position: relative;
-            input{
-                width: 100%;
-                height: 5rem;
-                padding: 0 2rem;
-                border: none;
-                font-size: 1.6rem;
-                font-weight: 900;
-                
-                justify-content: right;
-                align-items: right;
-            }
-            
-            .list{
-                width: 100%;
-                li{
-                    background: #ececec;
-                    a{
-                        display: block;
-                        width: 100%;
-                        padding: 1.5rem 2rem;
-                        font-size: 1.4rem;
-                        color: #000;
-                        &.active,
-                        &:hover{
-                            background: #999;
-                            color: #fff;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    .filter{
-        border: 1px solid #999;
-        margin: 5rem 0;
+  width: 100%;
+  .searchBox{
+    padding: 2rem 0;
+    background: #000;
+    >.container{
+      position: relative;
+      input{
+        width: 100%;
+        height: 5rem;
+        padding: 0 2rem;
+        border: none;
+        font-size: 1.6rem;
+        font-weight: 900;
+
+        justify-content: right;
+        align-items: right;
+      }
+
+      .list{
+        width: 100%;
         li{
-            padding: 2rem;
-            font-size: 1.8rem;
-            font-weight: 900;
-            border-bottom: 1px solid #999;
-            p{
-                font-size: 1.4rem;
-                color: #999;
+          background: #ececec;
+          a{
+            display: block;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            font-size: 1.4rem;
+            color: #000;
+            &.active,
+            &:hover{
+              background: #999;
+              color: #fff;
             }
-            div{
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                margin-top: 1.2rem;
-                span{
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    input{
-                        width: 2rem;
-                        height: 2rem;
-                        margin-right: 1rem;
-                        transform: translateY(1px);
-                        cursor: pointer;
-                    }
-                    label{
-                        font-size: 1.8rem;
-                        margin-right: 2rem;
-                        cursor: pointer;
-                    }
-                }
-            }
-            &:last-child{
-                border: none
-            }
+          }
         }
+      }
     }
-    .movieBox{
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 2rem
+  }
+  .filter{
+    border: 1px solid #999;
+    margin: 5rem 0;
+    li{
+      padding: 2rem;
+      font-size: 1.8rem;
+      font-weight: 900;
+      border-bottom: 1px solid #999;
+      p{
+        font-size: 1.4rem;
+        color: #999;
+      }
+      div{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 1.2rem;
+        span{
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          input{
+            width: 2rem;
+            height: 2rem;
+            margin-right: 1rem;
+            transform: translateY(1px);
+            cursor: pointer;
+          }
+          label{
+            font-size: 1.8rem;
+            margin-right: 2rem;
+            cursor: pointer;
+          }
+        }
+      }
+      &:last-child{
+        border: none
+      }
     }
+  }
+  .movieBox{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem
+  }
 
 `
 

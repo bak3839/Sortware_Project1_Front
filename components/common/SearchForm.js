@@ -1,6 +1,9 @@
 import styles from '@/styles/Home.module.css';
 import styled from 'styled-components';
 import movie from '../../pages/movie_data.json';
+import disney from '../../pages/Disney.json';
+import marvel from '../../pages/Marvel.json';
+import pixar from '../../pages/Pixar.json';
 import { useState, useEffect, useRef, React } from 'react';
 import useDebounce from '@/pages/infos/useDebounce';
 import MovieCard from './MovieCard';
@@ -13,6 +16,7 @@ function find(search_title) {
     let poster_path;
     let id;
     let rating;
+    let genre;
 
     for (let i = 0; i < movie.movie_data.length; i++) {
         if (movie.movie_data[i].title.includes(search_title)) {
@@ -22,8 +26,9 @@ function find(search_title) {
             title = data.title;
             poster_path = data.poster_path;
             rating = data.vote_count;
+            genre = data.genre;
 
-            list.push({ rating: rating, id: id, index: i, title: title, poster_path: poster_path });
+            list.push({ rating: rating, id: id, index: i, title: title, poster_path: poster_path, genre: genre });
         }
     }
 
@@ -31,7 +36,26 @@ function find(search_title) {
         return b.rating - a.rating;
     });
 
-    return list;
+    const genreTypeList = list[0].genre.split(",");
+    const genreList = Array.from({ length: genreTypeList.length }, () => []);
+
+    for (let j = 0; j < genreTypeList.length; j++) {
+        for (let i = 0; i < movie.movie_data.length; i++) {
+            if (movie.movie_data[i].genre.includes(genreTypeList[j])) {
+                const { id, title, genre, poster_path, vote_count } = movie.movie_data[i];
+                genreList[j].push({ rating: vote_count, id: id, index: i, title: title, poster_path: poster_path });
+            }
+        }
+
+        genreList[j].sort(function (a, b) {
+            return b.rating - a.rating;
+        });
+
+        genreList[j] = genreList[j].slice(0, 10);
+        console.log(genreList[j]);
+    }
+
+    return {list, genreList, genreTypeList};
 } 
 /**
  * 제목으로 연관 영화 검색해서 미리보기 리스트 반환
@@ -169,7 +193,9 @@ function SearchForm() {
 
     const onKeyDown = (e) => {
         if(e.key == 'Enter') {
-            setPageBtn(true);
+            setPageBtn(false);
+            setProductCode(null);
+            setCurrentMovies(null);
             setMovielist(find(title));
         }
         else if(e.key == 'ArrowDown' || e.key == 'ArrowUp'){
@@ -198,6 +224,7 @@ function SearchForm() {
 
     // --------------------------- 장르 선택--------------------------------//
     const genre = ['범죄','드라마','액션','스릴러','SF','멜로','다큐멘터리','로맨스','코미디','가족','판타지','미스터리','공포','어드벤처','전쟁','사극','서부극','애니메이션'];
+    const [genreCode, setGenreCode] = useState(null);
     let code1 = [];
     let code2 = [];
 
@@ -244,6 +271,9 @@ function SearchForm() {
     const genreSearch = (e) => {
         if (checkedList.length == 0) return;
 
+        setMovielist(null);
+        setProductCode(null);
+
         let movieIndex = []; // 처음 장르가 포함된 영화의 인덱스
         let tmp = [];
         let genre = checkedList;
@@ -272,8 +302,73 @@ function SearchForm() {
             tmp = [];
         }
         setPageBtn(true);
-        setMovielist(genreBasedSearch(movieIndex));
+        setGenreCode(genreBasedSearch(movieIndex));
     }
+
+    // --------------------------- 제작사 선택--------------------------------//
+
+    const [productCode, setProductCode] = useState(null);
+    const [productId, setProducId] = useState(0);
+    const [checkboxes, setCheckboxes] = useState([
+        { id: 1, name: "디즈니", checked: false },
+        { id: 2, name: "마블", checked: false },
+        { id: 3, name: "픽사", checked: false },
+    ]);
+
+    // 체크박스 선택시 다른 체크박스 선택 취소(단일 선택하게 만듬)
+    const handleCheckboxChange = (changedCheckboxId) => {
+        const updatedCheckboxes = checkboxes.map((checkbox) => {
+            if (checkbox.id === changedCheckboxId) {
+                return { ...checkbox, checked: true };
+            } else {
+                return { ...checkbox, checked: false };
+            }
+        });
+
+        setProducId(changedCheckboxId);
+        setCheckboxes(updatedCheckboxes);
+    };
+
+    const productSearch = () => {
+        let cnt = 0;
+
+        for(let i = 0; i < 3; i++){
+            if(checkboxes[i].checked) cnt++;
+        }
+        if(cnt == 0) return;
+
+        setMovielist(null);
+        setCurrentMovies(null);
+
+        let result = [];
+        let data;
+
+        if(productId == 1) data = disney.data;
+        else if(productId == 2) data = marvel.data;
+        else if(productId == 3) data = pixar.data;
+        
+        let movieData = movie.movie_data;
+
+        for(let i =0; i < data.length; i++){
+            let index = data[i].index;
+            let now = movieData[index];
+
+            let rating = now.vote_count;
+            let id = now.id;
+            let title = now.title;
+            let poster_path = now.poster_path;
+
+            result.push({ rating: rating, id: id, index: index, title: title, poster_path: poster_path});
+        }
+
+        result.sort(function(a, b){
+            return b.rating - a.rating;
+        });
+
+        setPageBtn(null);
+        setProductCode(result);
+    }
+    // --------------------------- 제작사 선택--------------------------------//
 
     // ------------------- 영화 30개씩 페이지 나누기 ---------------//
     const moviePerPage = 30;
@@ -284,7 +379,7 @@ function SearchForm() {
     
     const [totalMovies, setTotalMovies] = useState(0);
     const [btnStart, setBtnStart] = useState(1);
-    const [maxPage, setMaxPage] = useState(100);
+    // const [maxPage, setMaxPage] = useState(100);
     
     let indexOfLastMovie = currentPage * moviePerPage;
     let indexOfFirstMovie = indexOfLastMovie - moviePerPage;
@@ -316,21 +411,34 @@ function SearchForm() {
     };
 
     // 영화 리스트 변경시 totalMovies 값 변경
+    // useEffect(() => {
+    //     setTotalMovies(movielist?.list.length);
+    //     setCurrentPage(1);       
+    // },[movielist])
     useEffect(() => {
-        setTotalMovies(movielist?.length);
+        setTotalMovies(genreCode?.length);
         setCurrentPage(1);       
-    },[movielist])
+    },[genreCode])
 
     // 페이지 변경시 currentMovies에 해당 페이지에 들어갈 30개 영화 리스트에서 슬라이스
+    // useEffect(() => {
+    //     if(movielist == null) return;
+
+    //     indexOfLastMovie = currentPage * moviePerPage;
+    //     indexOfFirstMovie = indexOfLastMovie - moviePerPage;
+    //     setCurrentMovies(movielist?.list.slice(indexOfFirstMovie, indexOfLastMovie));
+
+    //     setBtnStart(currentPage / 5); // 버튼 시작 1~5 / 6~10 까지 표시하기 위함    
+    // },[currentPage, movielist]); 
     useEffect(() => {
-        if(movielist == null) return;
+        if(genreCode == null) return;
 
         indexOfLastMovie = currentPage * moviePerPage;
         indexOfFirstMovie = indexOfLastMovie - moviePerPage;
-        setCurrentMovies(movielist?.slice(indexOfFirstMovie, indexOfLastMovie));
+        setCurrentMovies(genreCode.slice(indexOfFirstMovie, indexOfLastMovie));
 
         setBtnStart(currentPage / 5); // 버튼 시작 1~5 / 6~10 까지 표시하기 위함    
-    },[currentPage, movielist]); 
+    },[currentPage, genreCode]); 
 
     // 함수를 실행 시켜서 버튼태그가 담긴 배열 가져오기 매개변수로 시작 버튼 번호 넘기기
     useEffect(() => {
@@ -344,6 +452,7 @@ function SearchForm() {
             setCurrentPage(currentPage + 1);
         }
     };
+    
     const prevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
@@ -391,7 +500,11 @@ function SearchForm() {
                         <div>
                             {code2}
                         </div>
+                        <div>
+                            <button style={{ fontSize: "20px" }} onClick={genreSearch}>검색</button>
+                        </div>      
                     </li>
+                    
                     <li>
                         <p>카테고리</p>
                         <div>
@@ -408,25 +521,55 @@ function SearchForm() {
                     <li>
                         <p>제작사</p>
                         <div>
-                            <span>
-                                <input name="maker" id="marvel" type='checkbox' />
-                                <label htmlFor='marvel'>마블</label>
-                            </span>
-                            <span>
-                                <input name="maker" id="desiny" type='checkbox' />
-                                <label htmlFor='desiny'>디즈니</label>
-                            </span>
+                            {checkboxes.map((checkbox) => (
+                                <span>
+                                    <input
+                                        type="checkbox"
+                                        checked={checkbox.checked}
+                                        onChange={() => handleCheckboxChange(checkbox.id)}
+                                    />
+                                    <label htmlFor={checkbox.name}>{checkbox.name}</label>
+                                </span>
+                                
+                            ))}
+                        </div>
+                        <div>
+                            <button style={{ fontSize: "20px"}} onClick={productSearch}>검색</button>
                         </div>
                     </li>
                 </ul>
-                <button style={{ fontSize: "20px" }} onClick={genreSearch}>검색</button>
+                {/* <button style={{ fontSize: "20px" }} onClick={genreSearch}>검색</button> */}
             </div>
 
             <div className="movieBox container">
-                {currentMovies.map((m) => (
+                {currentMovies?.map((m) => (
                     <MovieCard key={m.id} index={m.index} title={m.title} poster_path={m.poster_path} />
                 ))}
             </div>
+
+            <div className='movieBox container'>
+                {movielist?.list?.map((m) => (
+                    <MovieCard key={m.id} index={m.index} title={m.title} poster_path={m.poster_path} />
+                ))}
+            </div>
+
+            <div className='movieBox container'>
+                {productCode?.map((m) => (
+                    <MovieCard key={m.id} index={m.index} title={m.title} poster_path={m.poster_path} />
+                ))}
+            </div>
+           
+            {movielist?.genreList.map((item, idx) => (<>
+                <h1 className='container' style={{ padding: "0 20px", margin: "30px auto", fontSize: "30px" }}>{movielist.genreTypeList[idx]}</h1>
+                <div className='movieBox container'>
+                    {item.map((m) => (
+                        <MovieCard key={m.id} index={m.index} title={m.title} poster_path={m.poster_path} />
+                    ))}
+                </div>
+                
+                {/* <div className="movieBox container">{item.slice(0, 10)}</div> */}
+            </>))}
+
             {pageBtn ? <div className="btnBox">
                 <button onClick={prevPage} className='btnShift'>{left}</button>
                 <span className='btnLine'>{pageNum}</span>
