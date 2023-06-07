@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import movie from '../../pages/movie_data.json';
-import { useState, useEffect, useRef, React } from 'react';
+import {useState, useEffect, useRef, React, useContext} from 'react';
 import useDebounce from '@/pages/infos/useDebounce';
 import MovieCard from './MovieCard';
 import axios from "axios";
+import {StatusContext} from "@/pages/infos/StatusContext";
 
 /**
  * 제목으로 연관 영화 검색해서 미리보기 리스트 반환
@@ -108,6 +109,7 @@ function RecommendForm() {
     const [recommendFlag, setRecommendFlag] = useState(true);
     const inputRef = useRef();
     const ulRef = useRef(null);
+    const {status, setStatus} = useContext(StatusContext);
 
     const debounceValue = useDebounce(title);
 
@@ -199,6 +201,11 @@ function RecommendForm() {
                 setMovieData(res.data);
             } catch (error) {
                 console.error(error);
+                if (error.response.status === 401) {
+                    // 호출 예시 1: handleLogoutClick() 함수 실행
+                    console.log(error.response.status);
+                    setStatus(false);
+                }
             }
         }
         fetchRecommendations(movieId);

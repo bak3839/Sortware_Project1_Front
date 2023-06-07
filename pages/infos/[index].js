@@ -4,9 +4,11 @@ import Video from '@/components/detail/Video';
 import MovieInfo from '@/components/detail/MovieInfo';
 import { useState } from 'react';
 import styled from 'styled-components';
+import {StatusContext} from "@/pages/infos/StatusContext";
 
 function MovieDetail() {
     const [flag, setFlag] = useState(true);
+    const [status, setStatus] = useState(true);
 
     const menuChange = (menu) => {
         if(flag == menu) return;
@@ -16,7 +18,9 @@ function MovieDetail() {
 
     return (
         <>
-            <Navigation />
+            <StatusContext.Provider value={{status, setStatus}}>
+                <Navigation/>
+
             <MovieInfo />
             <TapWrapper>
                 <div className='tab'>
@@ -27,6 +31,7 @@ function MovieDetail() {
                 </div>
             </TapWrapper>
             {flag ? <Board /> : <Video />}
+            </StatusContext.Provider>
         </>
     )
 }  

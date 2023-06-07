@@ -1,6 +1,6 @@
 import styles from '@/styles/Home.module.css';
 import styled from 'styled-components';
-import movie from '../../pages/movie_data.json';
+import movie from '../../pages/movie_data_final.json';
 import disney from '../../pages/Disney.json';
 import marvel from '../../pages/Marvel.json';
 import pixar from '../../pages/Pixar.json';
@@ -303,7 +303,11 @@ function SearchForm() {
         }
         setPageBtn(true);
         setGenreCode(genreBasedSearch(movieIndex));
+        
     }
+    // ------------------------- 카테고리 선택 --------------------------//
+
+    
 
     // --------------------------- 제작사 선택--------------------------------//
 
@@ -370,6 +374,8 @@ function SearchForm() {
     }
     // --------------------------- 제작사 선택--------------------------------//
 
+    //TODO: 최근에 추가한 영화가 있는 페이지에 가면 계속 남아있음
+
     // ------------------- 영화 30개씩 페이지 나누기 ---------------//
     const moviePerPage = 30;
     const [pageBtn, setPageBtn] = useState(false);
@@ -417,10 +423,12 @@ function SearchForm() {
     // },[movielist])
     useEffect(() => {
         setTotalMovies(genreCode?.length);
-        setCurrentPage(1);       
+        setCurrentPage(1);
+        console.log(genreCode);       
     },[genreCode])
 
     // 페이지 변경시 currentMovies에 해당 페이지에 들어갈 30개 영화 리스트에서 슬라이스
+
     // useEffect(() => {
     //     if(movielist == null) return;
 
@@ -432,11 +440,13 @@ function SearchForm() {
     // },[currentPage, movielist]); 
     useEffect(() => {
         if(genreCode == null) return;
+        setCurrentMovies(null);
 
         indexOfLastMovie = currentPage * moviePerPage;
         indexOfFirstMovie = indexOfLastMovie - moviePerPage;
-        setCurrentMovies(genreCode.slice(indexOfFirstMovie, indexOfLastMovie));
 
+        setCurrentMovies(genreCode.slice(indexOfFirstMovie, indexOfLastMovie));
+        console.log(currentMovies);
         setBtnStart(currentPage / 5); // 버튼 시작 1~5 / 6~10 까지 표시하기 위함    
     },[currentPage, genreCode]); 
 
@@ -462,6 +472,7 @@ function SearchForm() {
     const jumpToPage = (pageNumber) => {
         setCurrentPage(pageNumber);
     };     
+    
 
     return (
         <SearchFormWrapper>

@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import {useState, useEffect, useContext} from "react";
 import axios from "axios";
+import {StatusContext} from "@/pages/infos/StatusContext";
 
 export default function Navigation() {
     const router = useRouter();
@@ -9,14 +10,46 @@ export default function Navigation() {
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const {status, setStatus} = useContext(StatusContext);
 
     useEffect(() => {
-        // 페이지 로드 시 세션 스토리지에서 토큰 값을 확인하여 로그인 상태인지 확인
-        const token = sessionStorage.getItem("token");
+        const token = getCookie("token");
+
         if (token) {
             setIsLoggedIn(true);
         }
-    }, []);
+        //else return;
+        const fetchData = async () => {
+            if (token == null) console.log("로그인 해주세요")
+            else console.log(token)
+
+            try {
+                const response = await axios.post("http://localhost:8080/user/loginTest", null, // 요청 본문 데이터 (null로 설정)
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`, // 헤더에 토큰 추가
+                        },
+                    });
+            } catch (error) {
+              if (error.response.status === 401) {
+                // 호출 예시 1: handleLogoutClick() 함수 실행
+                setStatus(false);
+              } else if (error.response.status === 409) {
+                console.log("Flask 서버 Status: Off");
+              }
+            }
+        };
+
+        fetchData();
+    }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행되도록 설정
+
+    useEffect(() => {
+        if(status) return;
+        console.log(status);
+        setStatus(true);
+        handleLogoutClick();
+    }, [status])
 
     const handleLoginClick = () => {
         setShowLogin(!showLogin);
@@ -25,29 +58,77 @@ export default function Navigation() {
     const handleLoginFormSubmit = (e) => {
         e.preventDefault();
 
-        // 로그인 요청을 보내는 Axios 코드
+        const loginForm = {
+            id: id,
+            pw: pw
+        };
+
         axios
-            .post("http://localhost:8080/user/login", { id, pw })
+            .post("http://localhost:8080/user/login", loginForm, {
+                withCredentials: true,
+            })
             .then((res) => {
                 console.log("로그인 성공:", res.data);
-                const token = res.data.token; // 토큰 값 추출
 
-                // 세션 스토리지에 토큰 값을 저장
-                sessionStorage.setItem("token", res.data);
+                const token = getCookie("token");
+                // console.log(getCookie("token"))
+                setIsLoggedIn(true);
 
-                setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 값을 true로 설정
+                setShowLogin(false); // 로그인 성공 후 로그인 창 닫기
+
+                // 환영 메시지 보여주기
+                alert("환영합니다!");
+
+                // 페이지 새로고침
+                window.location.reload();
             })
             .catch((error) => {
                 console.error("로그인 실패:", error.response.data);
+                const errorMessage = error.response.data;
+
+                // 아이디 혹은 비밀번호 오류에 따라 다른 메시지 표시
+                let loginErrorMessage = "";
+                if (errorMessage === "아이디가 존재하지 않습니다") {
+                    loginErrorMessage = "아이디가 일치하지 않습니다.";
+                } else if (errorMessage === "비밀번호가 일치하지 않습니다.") {
+                    loginErrorMessage = "아이디 혹은 비밀번호가 일치하지 않습니다.";
+                } else {
+                    loginErrorMessage = "로그인에 실패했습니다. 관리자에게 문의주세요";
+                }
+
+                // 오류 메시지를 로그인 창에 표시
+                const errorMessageElement = document.getElementById("login-error-message");
+                if (errorMessageElement) {
+                    errorMessageElement.textContent = loginErrorMessage;
+                }
             });
     };
-
     const handleLogoutClick = () => {
-        // 세션 스토리지에서 토큰 값을 제거
-        sessionStorage.removeItem("token");
+        // 쿠키에서 토큰 값을 제거
+        deleteCookie("token");
 
         setIsLoggedIn(false); // 로그아웃 시 isLoggedIn 값을 false로 설정
-        // 필요한 경우 추가 로직 수행
+
+        // 로그아웃 알림 메시지 표시
+        alert("로그아웃 되었습니다.");
+
+        // 페이지 새로고침
+        window.location.reload();
+    };
+
+    // 쿠키 가져오기 함수
+    const getCookie = (name) => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(";").shift();
+    };
+
+// 쿠키 삭제 함수
+    const deleteCookie = (name) => {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    };
+    const handleClick = () => {
+        alert("구현중입니다");
     };
 
     return (
@@ -77,12 +158,14 @@ export default function Navigation() {
                     {isLoggedIn ? (
                         <>
                             <li onClick={handleLogoutClick}>로그아웃</li>
-                            <li>내 정보</li>
+                            <li onClick={handleClick}>내 정보</li>
                         </>
                     ) : (
                         <>
                             <li onClick={handleLoginClick}>로그인</li>
-                            <li>회원가입</li>
+                            <li
+                                onClick={() => router.push("/infos/register")}
+                            >회원가입</li>
                         </>
                     )}
                 </ul>
@@ -106,6 +189,7 @@ export default function Navigation() {
                                 onChange={(e) => setPw(e.target.value)}
                             />
                             <button type="submit">로그인</button>
+                            <div id="login-error-message" className="login-error-message"></div> {/* 오류 메시지를 표시할 요소 */}
                         </form>
                         <button className="close-button" onClick={handleLoginClick}>
                             닫기
@@ -178,6 +262,12 @@ const NavigationWrapper = styled.div`
     display: flex;
     justify-content: center; /* 로그인 버튼을 수평 중앙으로 정렬 */
     align-items: center; /* 로그인 버튼을 수직 중앙으로 정렬 */
+  }
+
+  .login-error-message {
+    text-align: center;
+    color: red;
+    font-weight: bold;
   }
 
   .login-container h2 {

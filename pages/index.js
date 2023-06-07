@@ -1,540 +1,89 @@
 import Navigation from '@/components/common/Navigation'
 import HomeMovieCard from '@/components/HomeMovieCard';
+import HomeCfMovieCard from '@/components/HomeCfMovieCard';
 import styled from 'styled-components';
-
-const lists = [
-    {
-      "index": 0,
-      "id": 59,
-      "title": "폭력의 역사",
-      "overview": "가정적이고 친절한 남자 톰은 어느 날 그가 운영하던 작은 식당에 들이닥친 파산 직전의 살인자들을 죽이고 사람을 구한 일로 일약 마을의 영웅이 되어 매스컴에 대서특필된다. 그러나 며칠 후, 거대 갱단의 두목 포가티가 찾아와 그의 진짜 정체는 따뜻한 가장 톰이 아닌 자신의 적이자 킬러인 조이라며 가족을 위협한다. 아내 에디와 아이들 역시 톰에게서 문득문득 보이는 조이의 모습에 두려움을 느끼며 점점 그를 멀리하고, 마침내 포가티는 톰의 집에 총을 들고 들이닥치는데...",
-      "poster_path": "\/76e6VadQglaSRPKSfgFbQauODm4.jpg",
-      "keyword": "robbery,double life,dual identity,small town,indiana, usa,distrust,fight,self-defense,marriage,based on comic,revenge,family relationships,mistaken identity,diner,lawyer,mobster,attempted robbery,based on graphic novel,",
-      "genre": "범죄,드라마,액션,스릴러",
-      "title_en": "A History Of Violence",
-      "cast\/0\/actor_id": 110,
-      "cast\/0\/character": "Tom Stall",
-      "cast\/1\/actor_id": 49,
-      "cast\/1\/character": "Edie Stall",
-      "cast\/2\/actor_id": 226,
-      "cast\/2\/character": "Sarah Stall",
-      "cast\/3\/actor_id": 225,
-      "cast\/3\/character": "Jack Stall",
-      "cast\/4\/actor_id": 227,
-      "cast\/4\/character": "Richie Cusack",
-      "cast\/5\/actor_id": 228,
-      "cast\/5\/character": "Carl Fogarty",
-      "director": "David Cronenberg,",
-      "date": "09\/23\/2005",
-      "vote_count": 2770,
-      "vote_aver": 7.18
-  },
-  {
-      "index": 1,
-      "id": 67,
-      "title": "천국을 향하여",
-      "overview": "이스라엘에 삶의 터전을 빼앗기고 그들의 암제와 차별정책, 절대적 빈곤 속에서 미래에 대한 희망도 없이 살아가는 팔레스타인의 젊은 청년들. 그들이 할 수 있는 저항이라고는 자신의 온몸을 산화시켜, 이스라엘인들에게 두려움을 주는 것뿐이다. 어릴 때부터 형제처럼 자라온 자이드와 할레드도 어느날 저항군 조직의 부름을 받고, 기꺼이 순교자의 소명을 받아들인다. 그러나 막상 가슴에 폭탄 띠를 두르고 이스라엘로 향하던 두 청년은 마음이 흔들리기 시작한다. 지옥 같은 현실에서 죽음과 같은 삶을 사는 것 보다는 영웅적인 죽음을 택해 천국으로 가고자 했던 그들. 그러나 과연 끊임없이 죽이고 죽고, 보복에 보복을 거듭하는 이 저항방식이 그들이 원하던 승리를 가져다 줄 것인가. 그들에겐 다른 선택의 여지가 없는 것인가하는 의문들이 그들을 주저하게 만든다. 죽음을 눈앞에 앞 둔 48시간 동안 자이드와 할레드는 극심한 혼란과 마음의 갈등을 겪게 되는데...",
-      "poster_path": "\/qWZkYa8VdcDZk8uzRB2PfhpM9IL.jpg",
-      "keyword": "individual,civil war,israel,palestine,middle east,muslim,palestinian-israeli conflict,friendship,suicide mission,unemployment,gay,",
-      "genre": "드라마",
-      "title_en": "Paradise Now",
-      "cast\/0\/actor_id": 762,
-      "cast\/0\/character": "Khaled",
-      "cast\/1\/actor_id": 764,
-      "cast\/1\/character": "Jamal",
-      "cast\/2\/actor_id": 765,
-      "cast\/2\/character": "Said's mother",
-      "cast\/3\/actor_id": 766,
-      "cast\/3\/character": "Abu Karem",
-      "cast\/4\/actor_id": 791,
-      "cast\/4\/character": "Abu Salim",
-      "cast\/5\/actor_id": 77498,
-      "cast\/5\/character": "Suha",
-      "director": "Hany Abu-Assad,",
-      "date": "09\/07\/2005",
-      "vote_count": 213,
-      "vote_aver": 6.9
-  },
-  {
-      "index": 2,
-      "id": 69,
-      "title": "앙코르",
-      "overview": "30세가 되기도 전에 비틀즈의 인기를 앞서고, 엘비스 프레슬리, 제리 리 루이스 등과의 어깨를 함께 했던 ‘쟈니 캐쉬’의 천재적이고 열정적인 음악 인생과 지독하게도 외롭고, 열정적이었던 그의 사랑이 아름다운 음악에 맞춰 펼쳐진다.  쟈니 캐쉬(호아킨 피닉스)는 어린 시절 부모님의 끔찍한 사랑을 받던 형이 사고로 죽은 뒤 평생을 형의 자리를 대신해 부모님의 사랑을 얻기 위해 노력하며 힘들어한다. 어린 시절부터 노래를 좋아했던 그는 작은 레코드회사에서 처음으로 자신의 앨범을 낸 뒤 순식간에 전 미국 소녀들의 우상으로 떠오르며 스타가 된다.  이미 어린 시절 첫사랑과 결혼한 유부남이었던 쟈니는 역시 가수인 준 카터(리즈 위더스푼)와 투어를 다니다 열정적인 사랑에 빠지게 되고, 이미 온갖 약물중독으로 망가질 대로 망가진 그에게 ‘준’은 ‘쟈니’를 그 자신으로부터 구해줄 수 있는 유일한 사람이 된다.",
-      "poster_path": "\/eV61rwiaprn2spmEvXwcSrZJh55.jpg",
-      "keyword": "germany,prison,music record,adultery,loss of loved one,country music,guitar,concert,marriage,single,johnny cash,accident,1960s,",
-      "genre": "드라마",
-      "title_en": "Walk The Line",
-      "cast\/0\/actor_id": 73421,
-      "cast\/0\/character": "John R. Cash",
-      "cast\/1\/actor_id": 368,
-      "cast\/1\/character": "June Carter",
-      "cast\/2\/actor_id": 417,
-      "cast\/2\/character": "Vivian Cash",
-      "cast\/3\/actor_id": 418,
-      "cast\/3\/character": "Ray Cash",
-      "cast\/4\/actor_id": 424,
-      "cast\/4\/character": "Sam Phillips",
-      "cast\/5\/actor_id": 425,
-      "cast\/5\/character": "Luther Perkins",
-      "director": "James Mangold,",
-      "date": "09\/13\/2005",
-      "vote_count": 2511,
-      "vote_aver": 7.494
-  },
-  {
-      "index": 3,
-      "id": 74,
-      "title": "우주전쟁",
-      "overview": "레이 페리어는 이혼한 항만 근로자로 아무런 희망 없이 매일을 살아간다. 그러던 어느 주말, 그의 전 부인은 아들 로비와 어린 딸 레이첼과 주말을 보내라고 레이에게 맡긴다. 그리곤 얼마 안 있어 강력한 번개가 내리친다. 잠시 후, 레이는 그의 집 근처에 있는 교차로에서 그들의 삶을 영원히 바꾸어버릴 엄청난 사건을 목격하게 된다. 커다랗고 다리가 셋 달린 정체 불명의 괴물이 땅속 깊은 곳에서 나타나 사람들이 미처 반응도 하기 전에 모든 것을 재로 만들었다. 평범했던 하루가 갑자기 외부의 알 수 없는 침략자들의 첫 번째 지구 공격으로 그들 인생에서 가장 엄청난 사건이 일어난 날이 되어버린 것이다. 레이는 그의 아이들을 이 무자비한 새로운 적들로부터 보호하기 위해 급히 피난을 떠나, 파괴되고 황폐해진 도시를 가로지르는 여정에 오른다. 거기서 그들은 침략자들을 피하기 위해 필사적으로 도망치는 피난민들을 만나 합류하게 된다. 그러나 그들이 어디로 가든지 안전한 곳은 없고, 피난처도 없다. 단지 소중한 사람을 지켜내겠다는 레이의 확고한 의지만 존재 할 뿐인데…..",
-      "poster_path": "\/f4JdjFJmyc76L5tjjdCOIQuzCZo.jpg",
-      "keyword": "post traumatic stress disorder,new jersey,based on novel or book,underground,airplane,dystopia,daughter,remake,alien,survival,apocalypse,creature,alien invasion,human subjugation,",
-      "genre": "드라마,액션,SF,스릴러",
-      "title_en": "War Of The Worlds",
-      "cast\/0\/actor_id": 500,
-      "cast\/0\/character": "Ray Ferrier",
-      "cast\/1\/actor_id": 501,
-      "cast\/1\/character": "Rachel Ferrier",
-      "cast\/2\/actor_id": 503,
-      "cast\/2\/character": "Robbie Ferrier",
-      "cast\/3\/actor_id": 502,
-      "cast\/3\/character": "Mary-Ann",
-      "cast\/4\/actor_id": 504,
-      "cast\/4\/character": "Harlan Ogilvy",
-      "cast\/5\/actor_id": 53184,
-      "cast\/5\/character": "Vincent",
-      "director": "Steven Spielberg,",
-      "date": "06\/28\/2005",
-      "vote_count": 7398,
-      "vote_aver": 6.492
-  },
-  {
-      "index": 4,
-      "id": 82,
-      "title": "마이애미 바이스",
-      "overview": "플로리다 남부로 유입되는 마약 공급책을 수사 중이던 FBI, CIA, DEA 연합 합동 작전이 정보 유출로 인해 실패로 돌아가고 연이은 세 건의 살인 사건이 발생한다. 내부 정보 유출로 더 이상의 사건 개입이 불가능해진 FBI는 합동 작전에 연루되지 않았던 비밀경찰 리코(제이미 폭스)와 소니(콜린 파렐)를 마약 운반책으로 위장 시켜 조직에 잠입시킨다. 수사기관의 시스템을 누구보다 잘 아는 두 사람은 정보를 역이용, 기관의 감시를 피해 첫 임무를 완벽하게 성사시키며 조직원으로 합류하지만, 보스의 아내 이사벨라(공리)에게 사랑을 느끼면서 복잡한 관계에 빠지는데...",
-      "poster_path": "\/e6Gq98gdnrwbLNtRcltnLxy6dnC.jpg",
-      "keyword": "miami, florida,florida,undercover,remake,drug dealing,police detective,urban setting,police investigation,havana, cuba,speedboat?,action hero,",
-      "genre": "액션",
-      "title_en": "Miami Vice",
-      "cast\/0\/actor_id": 72466,
-      "cast\/0\/character": "Det. James 'Sonny' Crockett",
-      "cast\/1\/actor_id": 134,
-      "cast\/1\/character": "Det. Ricardo 'Rico' Tubbs",
-      "cast\/2\/actor_id": 643,
-      "cast\/2\/character": "Isabella",
-      "cast\/3\/actor_id": 2038,
-      "cast\/3\/character": "Det. Trudy Joplin",
-      "cast\/4\/actor_id": 40543,
-      "cast\/4\/character": "Jose Yero",
-      "cast\/5\/actor_id": 8785,
-      "cast\/5\/character": "FBI Agent John Fujima",
-      "director": "Michael Mann,",
-      "date": "07\/27\/2006",
-      "vote_count": 1507,
-      "vote_aver": 5.983
-  },
-  {
-      "index": 5,
-      "id": 116,
-      "title": "매치 포인트",
-      "overview": "가난한 테니스 강사 크리스(조너선 리스 메이어스)는 상류층 친구 톰(매튜 구드)을 통해 그의 여동생 클로에(에밀리 모티머)와 그 가족들을 알게 된다. 신분 상승을 꿈꾸던 크리스는 클로에의 소개로 그녀의 아버지 회사에 취직하고, 클로에와 결혼하면서 꿈을 이뤄나간다. 그러나 그는 톰의 약혼녀였던 노라(스칼렛 요한슨)와 금지된 사랑에 빠져든다. 크리스를 향한 노라의 당연한 집착이 드러나면서 크리스의 이기적인 욕망은 점차 현실을 인식하게 된다. 이제 크리스는, 생각지도 못했던 결심을 실천에 옮기기에 이른다.",
-      "poster_path": "\/sTTp5CfMZAq0FWXoU7Nml6CtEfY.jpg",
-      "keyword": "love triangle,london, england,upper class,adultery,tennis,river thames,sports,love,wealth,lust,gold digger,instructor,social climbing,",
-      "genre": "멜로\/로맨스,드라마",
-      "title_en": "Match Point",
-      "cast\/0\/actor_id": 1244,
-      "cast\/0\/character": "Chris Wilton",
-      "cast\/1\/actor_id": 1245,
-      "cast\/1\/character": "Nola Rice",
-      "cast\/2\/actor_id": 1246,
-      "cast\/2\/character": "Chloe Hewett Wilton",
-      "cast\/3\/actor_id": 1248,
-      "cast\/3\/character": "Alec Hewett",
-      "cast\/4\/actor_id": 1249,
-      "cast\/4\/character": "Eleanor Hewett",
-      "cast\/5\/actor_id": 34715,
-      "cast\/5\/character": "Detective Banner",
-      "director": "Woody Allen,",
-      "date": "10\/26\/2005",
-      "vote_count": 3639,
-      "vote_aver": 7.352
-  },
-  {
-      "index": 6,
-      "id": 118,
-      "title": "찰리와 초콜릿 공장",
-      "overview": "전 세계 누구에게나 사랑 받는 윌리 웡카 초콜릿 공장. 매일 엄청난 양의 초콜릿을 생산해 세계 각국으로 운반하고 있지만 그 누구도 공장을 드나 드는 사람을 본 적이 없는 비밀의 공간이다. 공장보다 더 신비로운 수수께끼는 공장장인 윌리 웡카(조니 뎁)라는 인물. 소문에 의하면 웡카는 몇 년 동안 공장 밖으로 나가본 적도 없다고 한다. 어느 날 윌리 웡카가 5개의 웡카 초콜릿에 감춰진 행운의 황금티켓을 찾은 어린이 다섯 명에게 자신의 공장을 공개하고 그 모든 제작과정의 비밀을 보여주겠다는 선언을 한다. 이제 전 세계 어린이들은 황금티켓을 찾기 위한 노력을 시작한다.",
-      "poster_path": "\/b3422i6tIf91RttBRfIz70dBSwn.jpg",
-      "keyword": "london, england,chocolate,factory worker,based on novel or book,parent child relationship,candy,overweight child,grandparent grandchild relationship,teacher,candy bar,",
-      "genre": "코미디,가족,판타지",
-      "title_en": "Charlie And The Chocolate Factory",
-      "cast\/0\/actor_id": 85,
-      "cast\/0\/character": "Willy Wonka",
-      "cast\/1\/actor_id": 1281,
-      "cast\/1\/character": "Charlie Bucket",
-      "cast\/2\/actor_id": 1282,
-      "cast\/2\/character": "Grandpa Joe",
-      "cast\/3\/actor_id": 1283,
-      "cast\/3\/character": "Mrs. Bucket",
-      "cast\/4\/actor_id": 1284,
-      "cast\/4\/character": "Mr. Bucket",
-      "cast\/5\/actor_id": 1294,
-      "cast\/5\/character": "Mrs. Beauregarde",
-      "director": "Tim Burton,",
-      "date": "07\/13\/2005",
-      "vote_count": 13427,
-      "vote_aver": 7.038
-  },
-  {
-      "index": 7,
-      "id": 142,
-      "title": "브로크백 마운틴",
-      "overview": "눈부신 만년설로 뒤덮인 봉우리와 맑고 깊은 계곡, 한없이 펼쳐진 푸른 초원 위에 노니는 수천 마리의 양떼가 장관을 이루고 있는 8월의 브로크백 마운틴. 이곳의 양떼 방목장에서 여름 한 철 함께 일하게 된 갓 스물의 두 청년 에니스와 잭은 마치 오랜 친구처럼 서로에게 마음을 터놓는 사이가 된다. 대자연의 품에서 깊어져 간 그들의 우정은 친구 사이의 친밀함 이상으로 발전해간다. 그들 앞에 놓인 낯선 감정의 실체가 무엇인지도 알지 못한 채 짧은 방목철이 끝나고 다시 만날 기약도 없이 두 사람은 각자의 삶으로 돌아간다. 결혼해 아이를 낳고 평범한 생활을 하다가 4년 만에 다시 만난 두 사람은 단번에 브로크백에서 서로에게 가졌던 그 낯선 감정이 일시적인 것이 아니었음을 알게 되는데...",
-      "poster_path": "\/o5oQC9GxEfClgnHvabpvGhkUoqe.jpg",
-      "keyword": "countryside,homophobia,wyoming, usa,intolerance,marriage crisis,secret love,in the closet,summer,cowboy,lgbt,star crossed lovers,1960s,closeted homosexual,gay love,gay theme,gay,gay relationship,",
-      "genre": "드라마",
-      "title_en": "Brokeback Mountain",
-      "cast\/0\/actor_id": 1810,
-      "cast\/0\/character": "Ennis Del Mar",
-      "cast\/1\/actor_id": 131,
-      "cast\/1\/character": "Jack Twist",
-      "cast\/2\/actor_id": 1812,
-      "cast\/2\/character": "Alma Beers",
-      "cast\/3\/actor_id": 1813,
-      "cast\/3\/character": "Lureen Newsome",
-      "cast\/4\/actor_id": 1811,
-      "cast\/4\/character": "Joe Aguirre",
-      "cast\/5\/actor_id": 1817,
-      "cast\/5\/character": "Cassie Cartwright",
-      "director": "Ang Lee,",
-      "date": "09\/10\/2005",
-      "vote_count": 6168,
-      "vote_aver": 7.802
-  },
-  {
-      "index": 8,
-      "id": 155,
-      "title": "다크 나이트",
-      "overview": "범죄와 부정부패를 제거하여 고담시를 지키려는 배트맨. 그는 짐 고든 형사와 패기 넘치는 고담시 지방 검사 하비 덴트와 함께 도시를 범죄 조직으로부터 영원히 구원하고자 한다. 세 명의 의기투합으로 위기에 처한 악당들이 모인 자리에 보라색 양복을 입고 얼굴에 짙게 화장을 한 괴이한 존재가 나타나 배트맨을 죽이자는 사상 초유의 제안을 한다. 그는 바로 어떠한 룰도, 목적도 없는 사상 최악의 악당 미치광이 살인광대 조커. 배트맨을 죽이고 고담시를 끝장내버리기 위한 조커의 광기 어린 행각에 도시는 혼란에 빠지는데...",
-      "poster_path": "\/f6dNinWX8rBM79JXKcShkfSh2oA.jpg",
-      "keyword": "crime fighter,secret identity,anti hero,scarecrow,sadism,chaos,vigilante,joker,superhero,based on comic,tragic hero,organized crime,anti villain,criminal mastermind,district attorney,super power,super villain,neo-noir,",
-      "genre": "범죄,드라마,액션,미스터리",
-      "title_en": "The Dark Knight",
-      "cast\/0\/actor_id": 3894,
-      "cast\/0\/character": "Bruce Wayne \/ Batman",
-      "cast\/1\/actor_id": 1810,
-      "cast\/1\/character": "Joker",
-      "cast\/2\/actor_id": 3895,
-      "cast\/2\/character": "Alfred Pennyworth",
-      "cast\/3\/actor_id": 64,
-      "cast\/3\/character": "James Gordon",
-      "cast\/4\/actor_id": 6383,
-      "cast\/4\/character": "Harvey Dent \/ Two-Face",
-      "cast\/5\/actor_id": 1579,
-      "cast\/5\/character": "Rachel Dawes",
-      "director": "Christopher Nolan,",
-      "date": "07\/14\/2008",
-      "vote_count": 29349,
-      "vote_aver": 8.5
-  },
-  {
-      "index": 9,
-      "id": 179,
-      "title": "인터프리터",
-      "overview": "아프리카 태생인 UN 통역사 실비아 브룸이 그녀 외 극소수만이 알고 있는 언어로 아프리카 정치 지도자의 목숨을 위협하는 것을 엿들었다고 강력히 주장하면서 사건은 시작된다. 연방요원 토빈 켈러의 보호를 받게 되면서 그녀의 상황은 더욱 더 끔찍해진다. 그녀의 미심쩍은 과거와 그녀가 비밀스럽게 국제적으로 연결 되어 있다는 사실을 파헤치게 되면서 그녀가 음모 속으로 직접 뛰어들지 않았나 하고 더욱 의심하게 되고, 매 순간마다 그는 그녀를 더욱더 의심스럽게 만드는 증거들을 찾아내게 된다.",
-      "poster_path": "\/xxwBaylfqKrCZ9XstENHMpd36Xj.jpg",
-      "keyword": "new york city,dictator,africa,destruction of a civilization,assassination,resistance,fbi,revenge,murder,united nations,witness to murder,resistance fighter,",
-      "genre": "드라마,스릴러",
-      "title_en": "The Interpreter",
-      "cast\/0\/actor_id": 2227,
-      "cast\/0\/character": "Silvia Broome",
-      "cast\/1\/actor_id": 2228,
-      "cast\/1\/character": "Tobin Keller",
-      "cast\/2\/actor_id": 2245,
-      "cast\/2\/character": "Philippe",
-      "cast\/3\/actor_id": 2249,
-      "cast\/3\/character": "Police Chief Lee Wu",
-      "cast\/4\/actor_id": 2229,
-      "cast\/4\/character": "Dot Woods",
-      "cast\/5\/actor_id": 2244,
-      "cast\/5\/character": "Nils Lud",
-      "director": "Sydney Pollack,",
-      "date": "04\/08\/2005",
-      "vote_count": 1264,
-      "vote_aver": 6.299
-  },
-]
-const lists2 = [
-    {
-        "index":8856,
-        "id":603692,
-        "title":"존 윅 4",
-        "overview":"죽을 위기에서 살아난 존 윅은 최고 회의를 쓰러트릴 방법을 찾아낸다. 비로소 완전한 자유의 희망을 보지만, 빌런 그라몽 후작과 전 세계의 최강 연합은 존 윅의 오랜 친구까지 적으로 만들어 버리고, 새로운 위기에 놓인 존 윅은 최후의 반격을 준비하는데...",
-        "poster_path":"/9WF6TxCYwdiZw51NM92ConaQz1w.jpg",
-        "genre":"액션,스릴러,범죄",
-        "title_en":"John Wick: Chapter 4",
-        "cast/0/actor_id":6384,
-        "cast/1/actor_id":1341,
-        "cast/2/actor_id":137905,
-        "vote_count":2431
-     },
-     {
-        "index":8857,
-        "id":502356,
-        "title":"슈퍼 마리오 브라더스",
-        "overview":"따단-딴-따단-딴 ♫ 전 세계를 열광시킬 올 타임 슈퍼 어드벤처의 등장! 뉴욕의 평범한 배관공 형제 '마리오'와 ‘루이지’는 배수관 고장으로 위기에 빠진 도시를 구하려다 미스터리한 초록색 파이프 안으로 빨려 들어가게 된다. 파이프를 통해 새로운 세상으로 차원 이동하게 된 형제. 형 '마리오'는 뛰어난 리더십을 지닌 '피치'가 통치하는 버섯왕국에 도착하지만 동생 '루이지'는 빌런 '쿠파'가 있는 다크랜드로 떨어지며 납치를 당하고 ‘마리오’는 동생을 구하기 위해 ‘피치’와 ‘키노피오’의 도움을 받아 '쿠파'에 맞서기로 결심한다. 그러나 슈퍼스타로 세상을 지배하려는 그의 강력한 힘 앞에 이들은 예기치 못한 위험에 빠지게 되는데...!",
-        "poster_path":"/dlGyzCxbBQK1U2O5o31Z1hB6erc.jpg",
-        "genre":"애니메이션,가족,어드벤처,판타지,코미디",
-        "title_en":"The Super Mario Bros. Movie",
-        "cast/0/actor_id":73457,
-        "cast/1/actor_id":95101,
-        "cast/2/actor_id":1397778,
-        "vote_count":3935
-     },
-     {
-        "index":8858,
-        "id":385687,
-        "title":"분노의 질주: 라이드 오어 다이",
-        "overview":"돔과 그의 패밀리 앞에 나타난 운명의 적 단테. 과거의 그림자는 돔의 모든 것을 파괴하기 위해 달려온다. 단테에 의해 산산히 흩어진 패밀리들은 모두 목숨을 걸고 맞서야 하는 함정에 빠지고 마는데...",
-        "poster_path":"/wXNihLltMCGR7XepN39syIlCt5X.jpg",
-        "genre":"액션,범죄,스릴러",
-        "title_en":"Fast X",
-        "cast/0/actor_id":12835,
-        "cast/1/actor_id":17647,
-        "cast/2/actor_id":8169,
-        "vote_count":697
-     },
-     {
-        "index":8859,
-        "id":840326,
-        "title":"시수",
-        "overview":"라플란드의 황야 깊은 곳에서 금을 찾던 아타미 코피는 나치 순찰대를 우연히 만나게 되고, 파괴되고 채굴된 라플란드 황야를 가로지르는 숨막히는 추격전이 시작된다.",
-        "poster_path":"/uCAaaAQEDrTllYR4dtsEsfQa8We.jpg",
-        "genre":"액션,전쟁",
-        "title_en":"Sisu",
-        "cast/0/actor_id":148012,
-        "cast/1/actor_id":76547,
-        "cast/2/actor_id":116265,
-        "vote_count":527
-     },
-     {
-        "index":8860,
-        "id":447277,
-        "title":"인어공주",
-        "overview":"아틀란티카 바다의 왕 트라이튼의 사랑스러운 막내딸인 인어 에리얼은 늘 인간들이 사는 바다 너머 세상으로의 모험을 꿈꾼다. 어느 날, 우연히 바다 위로 올라갔다가 폭풍우 속 가라앉는 배에 탄 인간 에릭 왕자의 목숨을 구해준다. 갈망하던 꿈과 운명적인 사랑을 이루기 위해 용기를 낸 에리얼은 사악한 바다 마녀 울슐라와의 위험한 거래를 통해 다리를 얻게 된다. 드디어 바다를 벗어나 그토록 원하던 인간 세상으로 가게 되지만, 그 선택으로 에리얼과 아틀란티카 왕국 모두 위험에 처하게 되는데… 바닷속, 그리고 그 너머 아름다운 꿈과 사랑의 멜로디가 펼쳐진다!",
-        "poster_path":"/8k8tmcx5e6ShpackLnDswBo1tnB.jpg",
-        "genre":"어드벤처,가족,판타지,로맨스",
-        "title_en":"The Little Mermaid",
-        "cast/0/actor_id":1735828,
-        "cast/1/actor_id":1599391,
-        "cast/2/actor_id":1652371,
-        "vote_count":373
-     },
-     {
-        "index":8861,
-        "id":640146,
-        "title":"앤트맨과 와스프: 퀀텀매니아",
-        "overview":"슈퍼히어로 파트너인 스캇 랭과 호프 반 다인, 호프의 부모 재닛 반 다인과 행크 핌, 그리고 스캇의 딸 캐시 랭까지 미지의 양자 영역 세계 속에 빠져버린 앤트맨 패밀리. 그 곳에서 새로운 존재들과 무한한 우주를 다스리는 정복자 캉을 만나며, 그 누구도 예상 못 한 모든 것의 한계를 뛰어넘는 모험을 시작하게 되는데…",
-        "poster_path":"/sz6mTIDDQmR3DYgJudiTmoW2gR5.jpg",
-        "genre":"액션,어드벤처,SF",
-        "title_en":"Ant-Man and the Wasp: Quantumania",
-        "cast/0/actor_id":22226,
-        "cast/1/actor_id":19034,
-        "cast/2/actor_id":1674162,
-        "vote_count":3068
-     },
-     {
-        "index":8862,
-        "id":713704,
-        "title":"이블 데드 라이즈",
-        "overview":"길바닥에서 지친 베스가 비좁은 아파트에서 세 아이를 키우는 엘리를 뒤늦게 찾아간다. 아파트에서 신비로운 책이 발견되며 육체에 사로잡힌 악마가 발견되며, 베스가 가장 악몽 같은 버전의 모성애에 직면하게 되면서 생존에 위한 원초적인 싸움에 내몰리게 되는데...",
-        "poster_path":"/5ik4ATKmNtmJU6AYD0bLm56BCVM.jpg",
-        "genre":"스릴러,공포",
-        "title_en":"Evil Dead Rise",
-        "cast/0/actor_id":1186659,
-        "cast/1/actor_id":220620,
-        "cast/2/actor_id":144080,
-        "vote_count":1450
-     },
-     {
-        "index":8863,
-        "id":605886,
-        "title":"투 캐치 어 킬러",
-        "overview":"",
-        "poster_path":"/mFp3l4lZg1NSEsyxKrdi0rNK8r1.jpg",
-        "genre":"액션,범죄,스릴러,미스터리",
-        "title_en":"To Catch a Killer",
-        "cast/0/actor_id":94185,
-        "cast/1/actor_id":77335,
-        "cast/2/actor_id":1607522,
-        "vote_count":215
-     },
-     {
-        "index":8864,
-        "id":76600,
-        "title":"아바타: 물의 길",
-        "overview":"판도라 행성에서 제이크 설리와 네이티리가 이룬 가족이 겪게 되는 무자비한 위협과 살아남기 위해 떠나야 하는 긴 여정과 전투, 그리고 견뎌내야 할 상처에 대한 이야기를 그렸다. 살아남기 위해 설리 가족이 숲에서 바다로 터전을 옮기면서 겪게 되는 화합의 과정, 그리고 곳곳에서 도사리는 새로운 위협까지 역경 속에서 더 아름답게 펼쳐진다.",
-        "poster_path":"/z56bVX93oRG6uDeMACR7cXCnAbh.jpg",
-        "genre":"SF,어드벤처,액션",
-        "title_en":"Avatar: The Way of Water",
-        "cast/0/actor_id":65731,
-        "cast/1/actor_id":8691,
-        "cast/2/actor_id":10205,
-        "vote_count":8272
-     },
-     {
-        "index":8865,
-        "id":799379,
-        "title":"늑대사냥",
-        "overview":"동남아시아로 도피한 인터폴 수배자들을 이송할 움직이는 교도소 프론티어 타이탄. 극악무도한 이들과 베테랑 형사들이 필리핀 마닐라 항구에 모이고 탈출을 꿈꾸는 종두, 한국으로 돌아가야만 하는 도일을 비롯해 이들은 각자의 목적과 경계심을 품고 탑승한다. 한국으로 향하던 중, 태평양 한 가운데에서 이들에게는 지금까지 보지 못한 극한의 상황과 마주하게 되는데…",
-        "poster_path":"/op2y1gvqKhAh4yAPLwc4PlX3XRv.jpg",
-        "genre":"액션,스릴러,공포",
-        "title_en":"늑대사냥",
-        "cast/0/actor_id":1255411,
-        "cast/1/actor_id":1713025,
-        "cast/2/actor_id":1872629,
-        "vote_count":140
-     },
-     {
-        "index":8866,
-        "id":447365,
-        "title":"가디언즈 오브 갤럭시: Volume 3",
-        "overview":"가모라를 잃고 슬픔에 빠져 있던 피터 퀼이 위기에 처한 은하계와 동료를 지키기 위해 다시 한 번 가디언즈 팀과 힘을 모으고, 성공하지 못할 경우 그들의 마지막이 될지도 모르는 미션에 나서는 이야기.",
-        "poster_path":"/b7epV2cQZVIR4u5VZraDwD0AgiE.jpg",
-        "genre":"SF,어드벤처,액션",
-        "title_en":"Guardians of the Galaxy Vol. 3",
-        "cast/0/actor_id":73457,
-        "cast/1/actor_id":8691,
-        "cast/2/actor_id":543530,
-        "vote_count":1741
-     },
-     {
-        "index":8867,
-        "id":594767,
-        "title":"샤잠! 신들의 분노",
-        "overview":"신들의 힘을 갖게 된 빌리와 친구들은 각자의 방법으로 슈퍼히어로의 삶을 즐기게 된다. 그러던 그들 앞에 잃어버린 힘을 되찾고자 그리스 여신 헤스페라와 칼립소가 나타나게 되고, 세상은 혼돈에 빠지게 되는데…",
-        "poster_path":"/f5907P7GdAGI22PHNRfqoKCAcDR.jpg",
-        "genre":"코미디,액션,판타지",
-        "title_en":"Shazam! Fury of the Gods",
-        "cast/0/actor_id":69899,
-        "cast/1/actor_id":1768966,
-        "cast/2/actor_id":1774679,
-        "vote_count":1828
-     },
-     {
-        "index":8868,
-        "id":552688,
-        "title":"내 이름은 마더",
-        "overview":"은둔 생활을 하던 군 출신 암살자. 복수에 혈안이 된 무자비한 범죄자들의 손아귀에서 한 번도 만난 적 없는 딸을 지키기 위해 세상 밖으로 나온다.",
-        "poster_path":"/vnRthEZz16Q9VWcP5homkHxyHoy.jpg",
-        "genre":"액션,스릴러",
-        "title_en":"The Mother",
-        "cast/0/actor_id":16866,
-        "cast/1/actor_id":12763,
-        "cast/2/actor_id":41556,
-        "vote_count":666
-     },
-     {
-        "index":8869,
-        "id":569094,
-        "title":"스파이더맨: 어크로스 더 유니버스",
-        "overview":"새로운 스파이더맨 마일스 모랄레스(샤메익 무어)가 수많은 스파이더맨들과 함께 멀티버스 세계 속 다중 우주의 질서를 잡기 위해 빌런과 대결하는 이야기",
-        "poster_path":"/p2l6hOlyx1ZP6jt9wagthliVg9h.jpg",
-        "genre":"액션,어드벤처,애니메이션,SF",
-        "title_en":"Spider-Man: Across the Spider-Verse",
-        "cast/0/actor_id":587506,
-        "cast/1/actor_id":130640,
-        "cast/2/actor_id":543505,
-        "vote_count":93
-     },
-     {
-        "index":8870,
-        "id":620705,
-        "title":"크레이터",
-        "overview":"달 광산 정착지의 다섯 아이들이 탐사선을 훔쳐 타고 미지의 분화구를 탐험하는 여정에 나선다.",
-        "poster_path":"/fYPegDwZoD1jfVC5sszbEiQmE0c.jpg",
-        "genre":"SF,액션,어드벤처,가족",
-        "title_en":"Crater",
-        "cast/0/actor_id":2392706,
-        "cast/1/actor_id":1172108,
-        "cast/2/actor_id":1840063,
-        "vote_count":137
-     },
-     {
-        "index":8871,
-        "id":758323,
-        "title":"엑소시스트: 더 바티칸",
-        "overview":"바티칸이 인정한 공식 수석 엑소시스트이자 최고의 구마사제 '가브리엘 아모르트’ 신부(러셀 크로우)는 한 어린 소년에게 들린 악마를 구마하기 위해 스페인으로 향한다. 그리고 그곳에서 바티칸이 숨겨온 충격적인 비밀과 마주하고, '토마스 에스퀴벨’ 신부(다니엘 조바토)와 함께 진실을 파헤치게 되는데...",
-        "poster_path":"/fA1xRPplBqW87wWh0hO1pwbQmX8.jpg",
-        "genre":"공포,스릴러",
-        "title_en":"The Pope's Exorcist",
-        "cast/0/actor_id":934,
-        "cast/1/actor_id":1172147,
-        "cast/2/actor_id":210454,
-        "vote_count":1266
-     },
-     {
-        "index":8872,
-        "id":677179,
-        "title":"크리드 3",
-        "overview":"록키의 후계자인 크리드는 월드 챔피언으로 권투계를 장악한 후 완벽한 삶을 살던 중 과거 친형제 같았던 데미안과 재회한다. 오랜 시간 감옥 생활을 마치고 나온 데미안은 그가 꿈꾸던 인생을 사는 크리드와 충돌하며 그의 모든 것을 빼앗으려 하고, 크리드는 이에 맞서 자신의 미래를 지키기 위한 일생일대의 대결을 준비하는데…",
-        "poster_path":"/56HGRCoEY2OmO1yZro77IvldDpE.jpg",
-        "genre":"드라마,액션",
-        "title_en":"Creed III",
-        "cast/0/actor_id":135651,
-        "cast/1/actor_id":62561,
-        "cast/2/actor_id":1674162,
-        "vote_count":1478
-     },
-     {
-        "index":8873,
-        "id":882569,
-        "title":"더 커버넌트",
-        "overview":"아프가니스탄에서 적들에게 습격을 받아 죽을뻔했던 미 육군 병사가 현지 통역사의 도움과 노력으로 살아나 미국으로 돌아가게 되는데, 그 통역사와 가족은 약속대로 미국으로 오지 못한 사실을 알게 되자, 자신이 직접 그 가족들을 구하기 위해 아프가니스탄으로 향한다.",
-        "poster_path":"/kVG8zFFYrpyYLoHChuEeOGAd6Ru.jpg",
-        "genre":"전쟁,액션,스릴러",
-        "title_en":"Guy Ritchie's The Covenant",
-        "cast/0/actor_id":131,
-        "cast/1/actor_id":234907,
-        "cast/2/actor_id":60373,
-        "vote_count":405
-     },
-     {
-        "index":8874,
-        "id":868759,
-        "title":"고스팅",
-        "overview":"선량한 남자 콜은 수수께끼 같은 세이디에게 푹 빠지지만 곧 그녀가 비밀 요원이라는 충격적인 사실을 알게 된다. 두 번째 데이트 약속을 하기도 전에 콜과 세이디는 세상을 구하기 위한 국제적 모험에 휩쓸린다.",
-        "poster_path":"/zCsg0CgncQkLiAgk1zkmt15OhM8.jpg",
-        "genre":"액션,코미디,로맨스",
-        "title_en":"Ghosted",
-        "cast/0/actor_id":16828,
-        "cast/1/actor_id":224513,
-        "cast/2/actor_id":3490,
-        "vote_count":911
-     },
-     {
-        "index":8875,
-        "id":315162,
-        "title":"장화신은 고양이: 끝내주는 모험",
-        "overview":"아홉 개의 목숨 중 단 하나의 목숨만 남은 장화신은 고양이.  마지막 남은 목숨을 지키기 위해 히어로의 삶 대신 반려묘의 삶을 선택한 그에게 찾아온 마지막 기회, 바로 소원을 들어주는 소원별이 있는 곳을 알려주는 지도!  잃어버린 목숨을 되찾고 다시 히어로가 되기를 꿈꾸는 장화신은 고양이는 뜻밖에 동료가 된 앙숙 파트너 '키티 말랑손', 그저 친구들과 함께라면 모든 게 행복한 강아지 '페로'와 함께 소원별을 찾기 위해 길을 떠난다.  그리고 소원별을 노리는 또 다른 빌런들과 마주치게 되는데…",
-        "poster_path":"/rKgvctIuPXyuqOzCQ16VGdnHxKx.jpg",
-        "genre":"애니메이션,가족,판타지,어드벤처,코미디",
-        "title_en":"Puss in Boots: The Last Wish",
-        "cast/0/actor_id":3131,
-        "cast/1/actor_id":3136,
-        "cast/2/actor_id":210172,
-        "vote_count":5636
-     }
-]
+import {useEffect, useState} from "react";
+import {StatusContext} from "@/pages/infos/StatusContext";
+import axios from "axios";
+import json from "@/pages/movie_data_final.json";
 
 export default function Home() {
-  return (
-    <HomeWrapper>
-      <Navigation />
-      <HomeMovieCard title={"당신을 위한 추천 영화"} lists={lists}/>
-      <HomeMovieCard title={"이달의 추천 영화"} lists={lists2}/>
-    </HomeWrapper>
-  )
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [cfMovieId, setCfMovieId] = useState([]);
+    const [status, setStatus] = useState(true);
+    const url = "http://localhost:8080";
+
+    useEffect(() => {
+        const token = getCookie("token");
+        if (token) {
+            setIsLoggedIn(true);
+        }
+        const fetchData = async () => {
+            if (token == null) console.log("로그인 해주세요")
+            else console.log(token)
+
+            try {
+                const response = await axios.post(url + '/search/collaborative', null, // 요청 본문 데이터 (null로 설정)
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`, // 헤더에 토큰 추가
+                        },
+                    });
+
+                setCfMovieId(response.data)
+            } catch (error) {
+                console.error('CF 불러오기 실패:', error);
+                if (error.response.status === 401) {
+                    // 호출 예시 1: handleLogoutClick() 함수 실행
+                    setStatus(false);
+                } else if(error.response.status === 409) {
+                    console.log("Flask 서버 Status: Off");
+                }
+            }
+        };
+
+        fetchData();
+    }, []); // 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행되도록 설정
+
+    const cf_lists = [];
+    const lists = [8856, 8857, 8858, 8859, 8860, 8861, 8862, 8863, 8864, 8865, 8866, 8867, 8868, 8869, 8870, 8871, 8872, 8873, 8874, 8875];
+    const lists2 = [];
+
+
+    // const CfMovieId = [1726, 10138, 68721]; // test코드 아이언맨 1,2,3
+
+    // id 값을 사용하여 JSON 데이터를 찾아서 cf_lists 배열에 추가
+    cfMovieId.forEach(id => {
+        const foundItem = json["movie_data"].find((item) => item.id === id);
+        if (foundItem) {
+            cf_lists.push(foundItem);
+        }
+    });
+
+    lists.forEach((idx => {
+        lists2.push(json["movie_data"][idx]);
+    }))
+
+    // 쿠키 가져오기 함수
+    const getCookie = (name) => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(";").shift();
+    };
+
+    return (
+        <HomeWrapper>
+            <StatusContext.Provider value={{status, setStatus}}>
+                <Navigation/>
+            </StatusContext.Provider>
+            {isLoggedIn ? (
+                <HomeCfMovieCard title={"당신을 위한 추천 영화"} lists={cf_lists} />
+            ) : (null)
+            }
+            <HomeMovieCard title={"이달의 추천 영화"} lists={lists2}/>
+        </HomeWrapper>
+    );
 }
 
 const HomeWrapper = styled.div`
