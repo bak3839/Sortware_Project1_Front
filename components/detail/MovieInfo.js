@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import movie from '../../pages/movie_data.json';
+import movie from '../../pages/movie_data_final.json';
 import actor from '../../pages/actor_data.json';
 import styled from "styled-components";
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import movie from '../../pages/movie_data.json';
+import movie from '../../pages/movie_data_final.json';
 import {useState, useEffect, useRef, React, useContext} from 'react';
 import useDebounce from '@/pages/infos/useDebounce';
 import MovieCard from './MovieCard';

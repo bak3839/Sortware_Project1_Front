@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
-import movie from '../../pages/movie_data.json';
+import movie from '../../pages/movie_data_final.json';
 import styled from "styled-components";
 import {useRouter} from "next/router";
 import {StatusContext} from "@/pages/infos/StatusContext";

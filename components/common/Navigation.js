@@ -80,7 +80,8 @@ export default function Navigation() {
                 alert("환영합니다!");
 
                 // 페이지 새로고침
-                window.location.reload();
+                //window.location.reload();
+                router.replace({pathname: "/"});
             })
             .catch((error) => {
                 console.error("로그인 실패:", error.response.data);
@@ -113,7 +114,9 @@ export default function Navigation() {
         alert("로그아웃 되었습니다.");
 
         // 페이지 새로고침
-        window.location.reload();
+        //window.location.reload();
+        //router.replace({pathname: "/"});
+        setShowLogin(true);
     };
 
     // 쿠키 가져오기 함수
